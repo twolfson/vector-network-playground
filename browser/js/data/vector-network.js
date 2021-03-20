@@ -1,9 +1,10 @@
-// DEV: We're starting with a singleton for data, which we can replicate for layers
-module.exports = {
+// Define our constructor
+function VectorNetwork() {
   // TODO: Build out resizing by using underlying memory pool
-  verticesCount: 0,
-  vertices: new Uint8Array(20),
-
+  this.verticesCount = 0;
+  this.vertices = new Uint8Array(20);
+}
+VectorNetwork.prototype = {
   addVertex: function (x, y) {
     // TODO: Handle resizing of data instead of fixed length
     let newVertexOffset = this.verticesCount * 2;
@@ -12,3 +13,6 @@ module.exports = {
     this.verticesCount += 1;
   }
 };
+
+// Export our constructor
+module.exports = VectorNetwork;
