@@ -1,0 +1,4 @@
+# Node.js/library files
+.cache
+dist/
+node_modules/

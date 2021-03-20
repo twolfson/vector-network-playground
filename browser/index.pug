@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+  head
+    //- Required meta tags
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+
+    //- Skipped for now: Favicon, via https://realfavicongenerator.net/
+    //- <link rel="shortcut icon" href="/favicon.ico">
+
+    title vector-network-playground
+
+    //- https://www.bootstrapcdn.com/
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z", crossorigin="anonymous")
+
+    //- Skipped for now: Build our stylesheet
+    //- link(rel="stylesheet", href="css/main.scss")
+  body
+    canvas#canvas
+
+    //- Run our main JS after all content loaded
+    script(src="js/main.js")
