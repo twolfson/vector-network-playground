@@ -19,7 +19,7 @@ Playground for exploring for SVG-like vector networks, as built in Figma
   - Split models separately from rendering
   - https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/mesh/Mesh.js
   - vertexCount = n
-  - verticesXY = Uint8Array[x_1, y_1, ... x_n, y_n]
+  - verticesXY = Float32Array[x_1, y_1, ... x_n, y_n]
   - edgeCount = m
   - edges = Uint8Array[pair_1_start, pair_1_end, ..., pair_m_start, pair_m_end]
   - faceCount = a
