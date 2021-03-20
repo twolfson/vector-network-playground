@@ -11,7 +11,7 @@
     "foundry-release-npm": "~2.0.2",
     "parcel": "1.12.3",
     "pug": "~3.0.2",
-    "sass": "~1.26.10"
+    "sass": "~1.26.11"
   },
   "scripts": {
     "build": "rm -r dist && NODE_ENV=production parcel build browser/index.pug --public-url \".\" --no-source-maps",
