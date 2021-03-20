@@ -28,9 +28,8 @@ function App(canvasEl) {
 }
 App.prototype = {
   handleResize: function () {
-    let boundingRect = this.canvasEl.getBoundingClientRect();
-    this.width = boundingRect.width;
-    this.height = boundingRect.height;
+    this.width = this.canvasEl.width = window.innerWidth;
+    this.height = this.canvasEl.height = 600;
   },
 
   queueRender: function () {
