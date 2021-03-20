@@ -34,8 +34,20 @@ Playground for exploring for SVG-like vector networks, as built in Figma
 - Open questions:
   - What's performance of addition/removal of a vertex?
     - Do we clone it? Slice it? Splice it?
+    - Typed arrays support `subarray()` which reuses the same buffer (thus no new memory allocation)
+    - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/subarray
+    - This doesn't really answer question though...
+    - Not a lot of addition/removal tools in SculptGL, more reshaping
+    - Dynamic meshes do answer some quesitions though, https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/mesh/dynamic/MeshDynamic.js#L190-L201
+    - Resizing underlying array buffers at 2x increments
+    - There we go, remove and replace logic - https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/misc/Utils.js#L40-L57
+      - https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/mesh/dynamic/Subdivision.js#L52-L53
+    - The answer for a resize becomes `O(n)` performance, which is kind of poor... but I guess we can never do better for removing a vertex from edges...
+    - Alright, cool. Good enough to move forward
   - What's performance of addition/removal of an edge?
   - What's performance of addition/removal of a face?
+
+- Bonus: For better click detection resolution, use a quadtree - like how SculptGL likes an octree https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/mesh/MeshData.js#L77
 
 ## Unlicense
 As of Mar 20 2021, Todd Wolfson has released this repository and its contents to the public domain.
