@@ -17,7 +17,7 @@ function App(canvasEl) {
   this.queueRender();
 
   // TODO: Remove dev vertices
-  setTimeout(() => this.vectorNetworks[0].addVertex(20, 20), 1e3);
+  setTimeout(() => this.vectorNetworks[0].addVertex(0, 20), 1e3);
   setTimeout(() => this.vectorNetworks[0].addVertex(40, 20), 3e3);
   setTimeout(() => this.vectorNetworks[0].addVertex(80, 20), 5e3);
   setTimeout(() => this.vectorNetworks[0].addVertex(120, 20), 7e3);

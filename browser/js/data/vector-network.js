@@ -2,7 +2,7 @@
 function VectorNetwork() {
   // TODO: Build out resizing by using underlying memory pool
   this.verticesCount = 0;
-  this.vertices = new Uint8Array(20);
+  this.vertices = new Uint32Array(20);
 }
 VectorNetwork.prototype = {
   addVertex: function (x, y) {
