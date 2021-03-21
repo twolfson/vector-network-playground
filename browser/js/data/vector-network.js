@@ -193,17 +193,14 @@ VectorNetwork.prototype = {
       //   });
       // }
 
-      // TODO: Use >= instead of > for clarity with above scenario
-      if (addToStack.length >= 1) {
-        let newPreviousVertexIds = next.previousVertexIds.slice();
-        newPreviousVertexIds.push(currentVertexId);
-        addToStack.forEach(function (vertexId) {
-          stack.push({
-            vertexId: vertexId,
-            previousVertexIds: newPreviousVertexIds,
-          });
+      let newPreviousVertexIds = next.previousVertexIds.slice();
+      newPreviousVertexIds.push(currentVertexId);
+      addToStack.forEach(function (vertexId) {
+        stack.push({
+          vertexId: vertexId,
+          previousVertexIds: newPreviousVertexIds,
         });
-      }
+      });
 
       // Move to next item in BFS
       next = stack.pop();
