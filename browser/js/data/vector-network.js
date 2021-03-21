@@ -18,8 +18,8 @@ VectorNetwork.prototype = {
     for (let i = 0; i < this.verticesCount; i += 1) {
       // Using Euclidean distance makes the most sense
       let distance = Math.sqrt(
-          Math.pow(x - this.vertices[i*2 + 0], 2) +
-          Math.pow(y - this.vertices[i*2 + 1], 2));
+        Math.pow(x - this.vertices[(i * 2) + 0], 2) +
+        Math.pow(y - this.vertices[(i * 2) + 1], 2));
       if (distance <= minimumDistance && distance < closestVertexDistance) {
         closestVertexDistance = distance;
         closestVertexId = i;
@@ -42,8 +42,8 @@ VectorNetwork.prototype = {
     this.vertices = utils.resizeArray(this.vertices, (this.verticesCount + 1) * 2);
 
     // Update our new location
-    this.vertices[vertexId*2 + 0] = x;
-    this.vertices[vertexId*2 + 1] = y;
+    this.vertices[(vertexId * 2) + 0] = x;
+    this.vertices[(vertexId * 2) + 1] = y;
     this.verticesCount += 1;
 
     // Return our id

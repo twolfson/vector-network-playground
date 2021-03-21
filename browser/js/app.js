@@ -28,7 +28,7 @@ App.prototype = {
     let height = this.canvasEl.height = 600;
     this.scene.setSize(width, height);
   },
-}
+};
 
 // Export our constructor
 module.exports = App;

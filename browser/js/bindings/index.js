@@ -29,12 +29,12 @@ Bindings.prototype = {
       top: boundingRect.top + document.body.scrollTop,
       left: boundingRect.left + document.body.scrollLeft,
     };
-   },
+  },
 
   _addEventListener: function (eventType, fn) {
     let boundFn = fn.bind(this);
     this.canvasEl.addEventListener(eventType, boundFn);
-    return function removeListener () {
+    return function removeListener() {
       this.canvasEl.removeEventListener(eventType, boundFn);
     };
   },
@@ -90,8 +90,8 @@ Bindings.prototype = {
       let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
         mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
       if (nearbyVertexId !== null) {
-        mouse.x = this.data.lastVectorNetwork.vertices[nearbyVertexId*2 + 0];
-        mouse.y = this.data.lastVectorNetwork.vertices[nearbyVertexId*2 + 1];
+        mouse.x = this.data.lastVectorNetwork.vertices[(nearbyVertexId * 2) + 0];
+        mouse.y = this.data.lastVectorNetwork.vertices[(nearbyVertexId * 2) + 1];
         this.data.snappedVertexId = nearbyVertexId;
       }
     }
@@ -101,5 +101,5 @@ Bindings.prototype = {
 
     this._queueRender();
   }
-}
+};
 module.exports = Bindings;
