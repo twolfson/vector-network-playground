@@ -86,7 +86,7 @@ VectorNetwork.prototype = {
     this.edgesCount += 1;
 
     // Update our faces
-    this.updateFaces();
+    // this.updateFaces();
 
     // Return our id
     return edgeId;
@@ -144,24 +144,28 @@ VectorNetwork.prototype = {
 
     while (next) {
       // Start working against our new info, marking our vertex as visited
+      console.log('next', next);
       let currentVertexId = next.vertexId;
       visited[currentVertexId] = true;
 
       // If we've completed a cycle and we didn't just start, then stop
       // TODO: This logic is actually broken, should check last corner for `secondCorner`
       if (currentVertexId === vertexId1 && currentVertexId !== vertexId2) {
+        console.log('early return', next.previousVertexIds);
         return next.previousVertexIds;
       }
 
       // Resolve our adjacent vertex ids
       let adjacentVertexIds = [];
       for (let i = 0; i < this.edgesCount; i += 1) {
-        for (let j = 0; j < 2; j += 2) {
-          if (vertexId1 === this.edges[(i * 4) + (j * 2) + 0]) {
+        for (let j = 0; j < 2; j += 1) {
+          console.log('inner', this.edges[(i * 4) + (j * 2) + 0], this.edges[(i * 4) + (j * 2) + 1]);
+          if (currentVertexId === this.edges[(i * 4) + (j * 2) + 0]) {
             adjacentVertexIds.push(this.edges[(i * 4) + (j * 2) + 1]);
           }
         }
       }
+      console.log('adjacent ids', adjacentVertexIds, currentVertexId, this.edges);
 
       let addToStack = []; // Vertex ids
       for (let i = 0; i < adjacentVertexIds.length; i += 1) {
