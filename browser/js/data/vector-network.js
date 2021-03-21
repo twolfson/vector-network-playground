@@ -51,9 +51,12 @@ VectorNetwork.prototype = {
   },
   pushVertexToPath: function (pathId, x, y) {
     let vertexId = this._addVertex(x, y);
-    this.paths[pathId].pushVertexId(vertexId);
+    this.pushVertexIdToPath(pathId, vertexId);
     return vertexId;
-  }
+  },
+  pushVertexIdToPath: function (pathId, vertexId) {
+    this.paths[pathId].pushVertexId(vertexId);
+  },
 };
 
 // Export our constructor
