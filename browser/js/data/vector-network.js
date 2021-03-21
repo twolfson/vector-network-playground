@@ -97,24 +97,33 @@ VectorNetwork.prototype = {
     // TODO: How do we identify when we subdivide a face so we can persist the fills?
     //   They don't do that in blueprint3d
     //   Something about new face with all edges except new edge being contained by an existing face?
-    // TODO: Use dynamically sized array
-    let adjacentVertexIds = new Uint8Array(100 * 8);
-    // DEV: Ideally would use boolean field but this is the simplest we've got
-    let seenVertexIds = new Uint8Array(this.verticesCount);
-    for (let vertexId = 0; vertexId < this.verticesCount; vertexId += 1) {
-      // Find all adjacent vertices
-      let adjacentVertexIdsIndex = 0;
-      adjacentVertexIds.fill(0); // Not necessary but nice to indicate data reset
+    // TODO: Move to typed data, though this doesn't affect draw performance so questionable
+    //   Can also prob rationalize that we don't need typed data since we aren't dealing with 100k data points
+    //   These are added by humans instead so at most 100 ._. (lots of clicking)
 
-      for (let edgeId = 0; edgeId < this.edgesCount; edgeId += 1) {
-        if (this.edges[(edgeId * 2) + 0] === vertexId) {
-          adjacentVertexIds[adjacentVertexIdsIndex] = this.edges[(edgeId * 2) + 1];
-          adjacentVertexIdsIndex += 1;
-        } else if (this.edges[(edgeId * 2) + 1] === vertexId) {
-          adjacentVertexIds[adjacentVertexIdsIndex] = this.edges[(edgeId * 2) + 0];
-          adjacentVertexIdsIndex += 1;
-        }
+    // Verbatim rewrite of blueprint3d
+
+    let stack = []; // {vertexId, previousVertexIds: []}
+    let next = {
+      vertexId: vertexId2,
+      previousVertexIds: [vertexId1]
+    };
+    let visited = {};
+    visited[vertexId1] = true;
+
+    while (next) {
+      // Start working against our new info, marking our vertex as visited
+      let currentVertexId = next.vertexId;
+      visited[currentVertexId] = true;
+
+      // If we've completed a cycle and we didn't just start, then stop
+      // TODO: This logic is actually broken, should check last corner for `secondCorner`
+      if (currentVertexId === vertexId1 && currentVertexId !== vertexId2) {
+        return next.previousVertexIds;
       }
+
+      let addToStack = []; // Vertex ids
+      let adjacentVertexds = [];
     }
   },
   pushVertexToPath: function (pathId, x, y) {
