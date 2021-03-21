@@ -29,6 +29,12 @@ Playground for exploring for SVG-like vector networks, as built in Figma
     - Later: Technically we could still use edges and paths
     - In fact, unsure why faces aren't just vertex ids -- or maybe they are and our memory is fuzzy =/
     - Oh, edges are just their own thing -_-;; Damn it, well good to refresh on I guess, https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/mesh/MeshData.js#L32
+    - After completing path implementation:
+      - We really do want to use edges always and no need for any notion of paths
+      - Faces would be recomputed on path closing
+      - Exampleof how paths break: clicking pattern of vertex ids: [0, 1, 2, 1] (so like a triangle flag)
+        - Path implementation would need to split and such
+        - More sanely, edges would just add together
   - edgeCount = m
   - edges = Uint8Array[pair_1_start, pair_1_end, ..., pair_m_start, pair_m_end]
   - faceCount = a
