@@ -52,6 +52,7 @@ VectorNetwork.prototype = {
   pushVertexToPath: function (pathId, x, y) {
     let vertexId = this._addVertex(x, y);
     this.paths[pathId].pushVertexId(vertexId);
+    return vertexId;
   }
 };
 

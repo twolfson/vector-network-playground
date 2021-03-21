@@ -31,7 +31,6 @@ Scene.prototype ={
 
     // Draw our vector networks
     // TODO: Figure out why closing edge isn't being drawn
-    // TODO: Figure out why preview edge is gone
     data.vectorNetworks.forEach(function (vectorNetwork) {
       // Draw our paths first
       let paths = vectorNetwork.paths;
