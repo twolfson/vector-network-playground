@@ -182,7 +182,7 @@ VectorNetwork.prototype = {
       // TODO: Omit sorting for now, heuristically we prob just want shortest cycle as-is -- unsure where angle comes is
       //   Later: It does actually matter... (e.g. concave faces) but not crtical for initial test cases
       //   If we want to leave a note, prob link to the test case
-      // if (addToStack.length > 1) {
+      // if (addToStack.length >= 2) {
       //   let previousVertexId = next.previousVertexIds[next.previousVertexIds.length - 1];
       //   let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
       //   let previousVertexY = that.vertices[(previousVertexId * 2) + 1];
@@ -194,7 +194,7 @@ VectorNetwork.prototype = {
       // }
 
       // TODO: Use >= instead of > for clarity with above scenario
-      if (addToStack.length > 0) {
+      if (addToStack.length >= 1) {
         let newPreviousVertexIds = next.previousVertexIds.slice();
         newPreviousVertexIds.push(currentVertexId);
         addToStack.forEach(function (vertexId) {
