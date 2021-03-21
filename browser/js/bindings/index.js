@@ -73,8 +73,9 @@ Bindings.prototype = {
     this._queueRender();
   },
   handleMousemove: function (evt) {
-    // If we're on an existing path, then find any nearby vertices
     let mouse = this.getMousePosition(evt);
+
+    // If we're on an existing path, then snap to any nearby vertices
     this.data.snappedVertexId = null;
     if (this.data.lastVectorNetwork !== null) {
       let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
