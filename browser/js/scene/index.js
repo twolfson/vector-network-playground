@@ -30,7 +30,6 @@ Scene.prototype ={
     this.context.clearRect(0, 0, this.width, this.height);
 
     // Draw our vector networks
-    // TODO: Adjust drawings to center on each item we're drawing
     data.vectorNetworks.forEach(function (vectorNetwork) {
       let vertices = vectorNetwork.vertices;
       for (let i = 0; i < vectorNetwork.verticesCount; i += 1) {
