@@ -98,6 +98,7 @@ describe.skip('A VectorNetwork adding a new and unrelated face', function () {
 
   });
 });
+
 describe.skip('A VectorNetwork adding an edge inside a closed path', function () {
   /*
   A-B      A-B
@@ -109,7 +110,7 @@ describe.skip('A VectorNetwork adding an edge inside a closed path', function ()
   });
 });
 
-describe.skip('A VectorNetwork adding an edge inside a closed path', function () {
+describe.skip('A VectorNetwork adding an edge outside a closed path', function () {
   /*
   A-B      A-B-E
   | |  ->  | |
@@ -117,6 +118,19 @@ describe.skip('A VectorNetwork adding an edge inside a closed path', function ()
   */
   it('adds no new faces', function () {
 
+  });
+});
+
+describe.skip('A VectorNetwork with a concave face', function () {
+  /*
+  A---B  ->  A---B
+  |   |  ->  |\  |
+  |   |  ->  | E |
+  |   |  ->  |/  |
+  D---C  ->  D---C
+  */
+  it('finds the 2 smallest faces successfully', function () {
+    // DEV: This should have shuffled order
   });
 });
 

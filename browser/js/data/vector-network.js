@@ -171,6 +171,8 @@ VectorNetwork.prototype = {
       let newPreviousVertexIds = next.previousVertexIds.slice();
       newPreviousVertexIds.push(currentVertexId);
       // TODO: Omit sorting for now, heuristically we prob just want shortest cycle as-is -- unsure where angle comes is
+      //   Later: It does actually matter... (e.g. concave faces) but not crtical for initial test cases
+      //   If we want to leave a note, prob link to the test case
       if (addToStack.length > 1) {
         let previousVertexId = next.previousVertexIds[next.previousVertexIds.length - 1];
         let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
