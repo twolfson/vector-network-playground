@@ -21,7 +21,7 @@ describe('A VectorNetwork with an open path', function () {
   });
 });
 
-describe.only('A VectorNetwork with a closed path', function () {
+describe('A VectorNetwork with a closed path', function () {
   /*
   A-B
   |/
@@ -65,12 +65,12 @@ describe('A VectorNetwork with a closed path and excess', function () {
 
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(4);
-    // expect(network.faces.length).to.equal(1);
+    expect(network.faces.length).to.equal(1);
   });
 });
 
-describe.skip('A VectorNetwork adding an existing edge', function () {
-  // A-B
+describe('A VectorNetwork adding an existing edge', function () {
+  // A-B + B-A
   it('does nothing', function () {
     let network = new VectorNetwork();
     let vertices = [
@@ -80,9 +80,9 @@ describe.skip('A VectorNetwork adding an existing edge', function () {
     network.addEdge(vertices[0], vertices[1]);
     network.addEdge(vertices[1], vertices[0]);
 
-    expect(network.vertices.length).to.equal(1);
+    expect(network.vertices.length).to.equal(2);
     expect(network.edges.length).to.equal(1);
-    // expect(network.faces.length).to.equal(0);
+    expect(network.faces.length).to.equal(0);
   });
 });
 
