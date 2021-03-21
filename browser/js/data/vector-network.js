@@ -1,11 +1,14 @@
 // Load in our dependencies
+const assert = require('assert');
 const Path = require('./path');
 const utils = require('./utils');
 
 // Define our constructor
 function VectorNetwork() {
   this.verticesCount = 0;
-  this.vertices = new Float32Array(0);
+  this.vertices = new Float32Array(100 * 2);
+  this.edgesCount = 0;
+  this.edges = new Uint8Array(100 * 2);
   this.paths = [];
 }
 VectorNetwork.prototype = {
@@ -36,7 +39,7 @@ VectorNetwork.prototype = {
     return pathId;
   },
 
-  _addVertex: function (x, y) {
+  addVertex: function (x, y) {
     // Resize our data to handle the new element
     let vertexId = this.verticesCount;
     this.vertices = utils.resizeArray(this.vertices, (this.verticesCount + 1) * 2);
@@ -48,6 +51,22 @@ VectorNetwork.prototype = {
 
     // Return our id
     return vertexId;
+  },
+  addEdge: function (vertexId1, vertexId2) {
+    // TODO: Verify the edge doesn't already exist
+    assert.notEqual(vertexId1, vertexId2, `Vertex ids are equal: ${vertexId1}, ${vertexId2}`);
+
+    // Resize our data to handle the new element
+    let edgeId = this.edgesCount;
+    this.edges = utils.resizeArray(this.edges, (this.edgesCount + 1) * 2);
+
+    // Update our new location
+    this.edges[(edgeId * 2) + 0] = vertexId1;
+    this.edges[(edgeId * 2) + 1] = vertexId2;
+    this.edgesCount += 1;
+
+    // Return our id
+    return edgeId;
   },
   pushVertexToPath: function (pathId, x, y) {
     let vertexId = this._addVertex(x, y);

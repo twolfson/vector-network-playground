@@ -4,11 +4,13 @@
   "description": "Playground for exploring for SVG-like vector networks, as built in Figma",
   "dependencies": {},
   "devDependencies": {
+    "chai": "~4.3.4",
     "eslint": "~7.18.0",
     "eslint-config-twolfson": "~1.0.0",
     "foundry": "~4.4.2",
     "foundry-release-git": "~2.0.3",
     "foundry-release-npm": "~2.0.2",
+    "mocha": "~8.3.2",
     "parcel": "1.12.3",
     "pug": "~3.0.2",
     "sass": "~1.26.11"
@@ -18,7 +20,7 @@
     "lint": "eslint browser/ --max-warnings 0 --max-warnings 0",
     "precheck": "eslint browser/",
     "start": "parcel browser/index.pug --port 5000",
-    "test": "npm run precheck && NODE_ENV=test echo \"No tests\" 1>&2 && npm run lint"
+    "test": "npm run precheck && NODE_ENV=test mocha 1>&2 && npm run lint"
   },
   "author": "Todd Wolfson <todd@twolfson.com> (http://twolfson.com/)",
   "license": "Unlicense",
