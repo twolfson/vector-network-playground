@@ -7,8 +7,9 @@ const utils = require('./utils');
 function VectorNetwork() {
   this.verticesCount = 0;
   this.vertices = new Float32Array(100 * 2);
+  // DEV: Edges stores both directions to simplify iteration and logic checks
   this.edgesCount = 0;
-  this.edges = new Uint8Array(100 * 2);
+  this.edges = new Uint8Array(100 * 4);
   // TODO: Move these notes somewhere... maybe architecture decisions
   // Sooo yea... let's talk through this
   // We can have a lot of faces so it's not performant to use anything other than typed data
@@ -66,19 +67,22 @@ VectorNetwork.prototype = {
     // If the edge already exists, return it
     assert.notEqual(vertexId1, vertexId2, `Vertex ids are equal: ${vertexId1}, ${vertexId2}`);
     for (let i = 0; i < this.edgesCount; i += 1) {
-      if ((vertexId1 === this.edges[(i * 2) + 0] && vertexId2 === this.edges[(i * 2) + 1]) ||
-          (vertexId1 === this.edges[(i * 2) + 1] && vertexId2 === this.edges[(i * 2) + 0])) {
-        return i;
+      for (let j = 0; j < 2; j += 1) {
+        if (vertexId1 === this.edges[(i * 4) + (j * 2) + 0] && vertexId2 === this.edges[(i * 4) + (j * 2) + 1]) {
+          return i;
+        }
       }
     }
 
     // Resize our data to handle the new element
     let edgeId = this.edgesCount;
-    this.edges = utils.resizeArray(this.edges, (this.edgesCount + 1) * 2);
+    this.edges = utils.resizeArray(this.edges, (this.edgesCount + 1) * 4);
 
     // Update our new location
-    this.edges[(edgeId * 2) + 0] = vertexId1;
-    this.edges[(edgeId * 2) + 1] = vertexId2;
+    this.edges[(edgeId * 2) + (0 * 2) + 0] = vertexId1;
+    this.edges[(edgeId * 2) + (0 * 2) + 1] = vertexId2;
+    this.edges[(edgeId * 2) + (1 * 2) + 0] = vertexId2;
+    this.edges[(edgeId * 2) + (1 * 2) + 1] = vertexId1;
     this.edgesCount += 1;
 
     // Update our faces
