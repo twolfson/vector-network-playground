@@ -12,6 +12,12 @@ Playground for exploring for SVG-like vector networks, as built in Figma
 - Exploring/better understanding vector rounding handles
 - Filling areas that are faces/closed loops
 
+## Terminology
+- Point, x/y location on cartesian plane
+- Vertex, point in a vector network
+- Edge, 2 vertices in a vector network
+- Face, cyclic collection of edges in a vector network
+
 ## Implementation ideas
 - Store data as nodes + edge graph
 - Using typed arrays for storing data
@@ -35,6 +41,7 @@ Playground for exploring for SVG-like vector networks, as built in Figma
       - Exampleof how paths break: clicking pattern of vertex ids: [0, 1, 2, 1] (so like a triangle flag)
         - Path implementation would need to split and such
         - More sanely, edges would just add together
+    - More notes... old data structure which was def more performant and why we switched
   - edgeCount = m
   - edges = Uint8Array[pair_1_start, pair_1_end, ..., pair_m_start, pair_m_end]
   - faceCount = a
