@@ -28,13 +28,16 @@ VectorNetwork.prototype = {
 
   addVertex: function (x, y) {
     // Resize our data to handle the new element
+    let vertexId = this.verticesCount;
     this.vertices = this.resizeArray(this.vertices, (this.verticesCount + 1) * 2);
 
     // Update our new location
-    let newVertexOffset = this.verticesCount * 2;
-    this.vertices[newVertexOffset + 0] = x;
-    this.vertices[newVertexOffset + 1] = y;
+    this.vertices[vertexId*2 + 0] = x;
+    this.vertices[vertexId*2 + 1] = y;
     this.verticesCount += 1;
+
+    // Return our id
+    return vertexId;
   }
 };
 

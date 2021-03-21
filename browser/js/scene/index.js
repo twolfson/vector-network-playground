@@ -35,6 +35,17 @@ Scene.prototype ={
       }
     });
 
+    // If we have a last vertex, draw an edge from it
+    if (data.lastVertexId) {
+      let lastVertexX = data.lastVectorNetwork.vertices[data.lastVertexId * 2 + 0];
+      let lastVertexY = data.lastVectorNetwork.vertices[data.lastVertexId * 2 + 1];
+
+      that.context.beginPath();
+      that.context.moveTo(lastVertexX, lastVertexY);
+      this.context.lineTo(data.cursor.x, data.cursor.y);
+      this.context.stroke();
+    }
+
     // Draw our cursor on top of everything
     this.context.fillRect(data.cursor.x, data.cursor.y, 5, 5);
   },
