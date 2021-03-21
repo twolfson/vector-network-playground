@@ -2,6 +2,7 @@
 function VectorNetwork() {
   this.verticesCount = 0;
   this.vertices = new Float32Array(0);
+  this.paths = [];
 }
 VectorNetwork.prototype = {
   // Based on: https://github.com/stephomi/sculptgl/blob/75bc19bfb666032c9c46010688a802502fc48fd9/src/mesh/dynamic/MeshDynamic.js#L190-L227

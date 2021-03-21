@@ -51,6 +51,7 @@ Bindings.prototype = {
     let mouse = this.getMousePosition(evt);
 
     // If we're close to an existing vertex, then close our path
+    // TODO: Find vertex + network instead of depending on last network
     if (this.data.lastVectorNetwork !== null) {
       let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
         mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
@@ -76,6 +77,7 @@ Bindings.prototype = {
     let mouse = this.getMousePosition(evt);
 
     // If we're on an existing path, then snap to any nearby vertices
+    // TODO: Find vertex + network instead of depending on last network
     this.data.snappedVertexId = null;
     if (this.data.lastVectorNetwork !== null) {
       let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(

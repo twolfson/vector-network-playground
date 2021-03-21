@@ -20,6 +20,12 @@ Playground for exploring for SVG-like vector networks, as built in Figma
   - https://github.com/stephomi/sculptgl/blob/a004d3051b29134f7a97943fc98eabdebe222fc0/src/mesh/Mesh.js
   - vertexCount = n
   - verticesXY = Float32Array[x_1, y_1, ... x_n, y_n]
+  - TODO: Update this in more detail
+    - We're ditching edges in favor of paths
+    - paths = [
+      Uint8Array[vertex_1, vertex_2, ...]
+      Uint8Array[vertex_a, vertex_b, ...]
+    ]
   - edgeCount = m
   - edges = Uint8Array[pair_1_start, pair_1_end, ..., pair_m_start, pair_m_end]
   - faceCount = a
