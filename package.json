@@ -1,6 +1,6 @@
 {
   "name": "vector-network-playground",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Playground for exploring for SVG-like vector networks, as built in Figma",
   "dependencies": {},
   "devDependencies": {
