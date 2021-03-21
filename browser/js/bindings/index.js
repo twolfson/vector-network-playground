@@ -11,8 +11,8 @@ Bindings.prototype = {
     // https://github.com/twolfson/blueprint3d/blob/twolfson-1.6.0/src/floorplanner/floorplanner.ts#L244-L249
     let canvasOffset = this.getCanvasOffset();
     return {
-      x: evt.pageX - canvasOffset.left,
-      y: evt.pageY - canvasOffset.top,
+      x: evt.pageX - canvasOffset.left - window.scrollX,
+      y: evt.pageY - canvasOffset.top - window.scrollY,
     }
   },
   getCanvasOffset: function () {

@@ -4,6 +4,6 @@ const VectorNetwork = require('./vector-network');
 // Provide a container for all our common data
 function Data() {
   this.vectorNetworks = [new VectorNetwork()];
-  this.cursor = {x: null, y: null};
+  this.cursor = {x: 0, y: 0};
 }
 module.exports = Data;
