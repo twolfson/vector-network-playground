@@ -30,7 +30,6 @@ Scene.prototype ={
     this.context.clearRect(0, 0, this.width, this.height);
 
     // Draw our vector networks
-    // TODO: Figure out why closing edge isn't being drawn
     data.vectorNetworks.forEach(function (vectorNetwork) {
       // Draw our paths first
       let paths = vectorNetwork.paths;

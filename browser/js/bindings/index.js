@@ -46,7 +46,6 @@ Bindings.prototype = {
   },
 
   handleClick: function (evt) {
-    // TODO: Handle loop closing
     // Resolve our mouse
     let mouse = this.getMousePosition(evt);
 
