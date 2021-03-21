@@ -11,7 +11,7 @@ function App(canvasEl) {
   this.data = new Data();
   this.scene = new Scene({
     context: this.context, data: this.data,
-    width: null, height: null
+    width: null, height: null,
   });
 
   // Resolve width/height for scene
@@ -19,7 +19,7 @@ function App(canvasEl) {
 
   // Set up our UI bindings
   this.bindings = new Bindings({
-    canvasEl: this.canvasEl, data: this.data
+    canvasEl: this.canvasEl, data: this.data, scene: this.scene,
   });
 }
 App.prototype = {

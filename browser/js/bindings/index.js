@@ -1,12 +1,17 @@
-function Bindings({ canvasEl, data }) {
+function Bindings({ canvasEl, data, scene }) {
   // Save our parameters
   this.canvasEl = canvasEl;
   this.data = data;
+  this.scene = scene;
 
   // Bind our listeners
   this._teardownFns = this.addEventListeners();
 }
 Bindings.prototype = {
+  _queueRender: function () {
+    this.scene.queueRender();
+  },
+
   getMousePosition: function (evt) {
     // https://github.com/twolfson/blueprint3d/blob/twolfson-1.6.0/src/floorplanner/floorplanner.ts#L244-L249
     let canvasOffset = this.getCanvasOffset();
@@ -39,15 +44,23 @@ Bindings.prototype = {
   },
 
   handleClick: function (evt) {
+    // TODO: Handle loop closing
     let mouse = this.getMousePosition(evt);
     let vectorNetwork = this.data.vectorNetworks[0];
-    vectorNetwork.addVertex(mouse.x, mouse.y);
+    let vertexId = vectorNetwork.addVertex(mouse.x, mouse.y);
+
+    this.data.lastVertexId = vertexId;
+    this.data.lastVectorNetwork = vectorNetwork;
+
+    this._queueRender();
   },
   handleMousemove: function (evt) {
-    // TODO: Handle mouse snapping
+    // TODO: Handle mouse snapping to vertex
     let mouse = this.getMousePosition(evt);
     this.data.cursor.x = mouse.x;
     this.data.cursor.y = mouse.y;
+
+    this._queueRender();
   }
 }
 module.exports = Bindings;

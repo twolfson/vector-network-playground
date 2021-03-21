@@ -18,7 +18,6 @@ Scene.prototype ={
     let that = this;
     requestAnimationFrame(function () {
       that.render();
-      that.queueRender();
     })
   },
   render: function () {
