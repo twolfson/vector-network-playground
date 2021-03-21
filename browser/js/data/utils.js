@@ -1,5 +1,5 @@
 // Based on: https://github.com/stephomi/sculptgl/blob/75bc19bfb666032c9c46010688a802502fc48fd9/src/mesh/dynamic/MeshDynamic.js#L190-L227
-exports.resizeArray: function (original, targetLength) {
+exports.resizeArray = function (original, targetLength) {
   // If our orginal is the same length as the target, then return the original
   if (original.length === targetLength) {
     return original;

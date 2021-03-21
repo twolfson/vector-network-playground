@@ -56,6 +56,7 @@ Bindings.prototype = {
       let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
         mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
       if (nearbyVertexId !== null) {
+        this.data.lastPathId = null;
         this.data.lastVertexId = null;
         this.data.lastVectorNetwork = null;
 
@@ -66,8 +67,10 @@ Bindings.prototype = {
 
     // Otherwise, start one/continue to add to it
     let vectorNetwork = this.data.vectorNetworks[0];
-    let vertexId = vectorNetwork.addVertex(mouse.x, mouse.y);
+    let pathId = this.data.lastPathId !== null ? this.data.lastPathId : vectorNetwork.addPath();
+    let vertexId = vectorNetwork.pushVertexToPath(pathId, mouse.x, mouse.y);
 
+    this.data.lastPathId = pathId;
     this.data.lastVertexId = vertexId;
     this.data.lastVectorNetwork = vectorNetwork;
 

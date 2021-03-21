@@ -7,7 +7,7 @@ function Path() {
   this.vertexIds = new Uint8Array(0);
 }
 Path.prototype = {
-  addVertexId: function (id) {
+  pushVertexId: function (id) {
     this.vertexIds = utils.resizeArray(this.vertexIds, (this.vertexIdCount + 1) * 1);
     this.vertexIds[this.vertexIdCount] = id;
     this.vertexIdCount += 1;

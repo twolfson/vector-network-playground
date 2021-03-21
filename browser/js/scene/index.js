@@ -30,8 +30,31 @@ Scene.prototype ={
     this.context.clearRect(0, 0, this.width, this.height);
 
     // Draw our vector networks
+    // TODO: Figure out why closing edge isn't being drawn
+    // TODO: Figure out why preview edge is gone
     data.vectorNetworks.forEach(function (vectorNetwork) {
+      // Draw our paths first
+      let paths = vectorNetwork.paths;
       let vertices = vectorNetwork.vertices;
+      paths.forEach(function (path) {
+        // If our path is too short, stop early
+        if (path.vertexIdCount < 2) {
+          return;
+        }
+
+        // Otherwise, draw our path
+        that.context.beginPath();
+        let firstVertexId = path.vertexIds[0];
+        that.context.moveTo(vertices[firstVertexId*2 + 0], vertices[firstVertexId*2 + 1]);
+        for (let i = 1; i < path.vertexIdCount; i += 1) {
+          let vertexId = path.vertexIds[i];
+          that.context.lineTo(vertices[vertexId*2 + 0], vertices[vertexId*2 + 1]);
+        }
+        that.context.strokeStyle = '#000000';
+        that.context.stroke();
+      });
+
+      // Then draw our vertices over our paths
       for (let i = 0; i < vectorNetwork.verticesCount; i += 1) {
         that.context.fillStyle = i === data.snappedVertexId ? '#FF00FF' : '#000000';
         that.context.fillRect(

@@ -1,4 +1,5 @@
 // Load in our dependencies
+const Path = require('./path');
 const utils = require('./utils');
 
 // Define our constructor
@@ -29,7 +30,13 @@ VectorNetwork.prototype = {
     return closestVertexId;
   },
 
-  addVertex: function (x, y) {
+  addPath: function () {
+    let pathId = this.paths.length;
+    this.paths.push(new Path());
+    return pathId;
+  },
+
+  _addVertex: function (x, y) {
     // Resize our data to handle the new element
     let vertexId = this.verticesCount;
     this.vertices = utils.resizeArray(this.vertices, (this.verticesCount + 1) * 2);
@@ -42,6 +49,10 @@ VectorNetwork.prototype = {
     // Return our id
     return vertexId;
   },
+  pushVertexToPath: function (pathId, x, y) {
+    let vertexId = this._addVertex(x, y);
+    this.paths[pathId].pushVertexId(vertexId);
+  }
 };
 
 // Export our constructor
