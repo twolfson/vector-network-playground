@@ -79,14 +79,14 @@ VectorNetwork.prototype = {
     this.edges = utils.resizeArray(this.edges, (this.edgesCount + 1) * 4);
 
     // Update our new location
-    this.edges[(edgeId * 2) + (0 * 2) + 0] = vertexId1;
-    this.edges[(edgeId * 2) + (0 * 2) + 1] = vertexId2;
-    this.edges[(edgeId * 2) + (1 * 2) + 0] = vertexId2;
-    this.edges[(edgeId * 2) + (1 * 2) + 1] = vertexId1;
+    this.edges[(edgeId * 4) + (0 * 2) + 0] = vertexId1;
+    this.edges[(edgeId * 4) + (0 * 2) + 1] = vertexId2;
+    this.edges[(edgeId * 4) + (1 * 2) + 0] = vertexId2;
+    this.edges[(edgeId * 4) + (1 * 2) + 1] = vertexId1;
     this.edgesCount += 1;
 
     // Update our faces
-    // this.updateFaces();
+    this.updateFaces();
 
     // Return our id
     return edgeId;
@@ -99,6 +99,7 @@ VectorNetwork.prototype = {
         allSmallestFaces.push(smallestFace);
       }
     }
+    console.log('aaa', allSmallestFaces);
   },
   findSmallestFace: function (vertexId1, vertexId2) {
     // Half-awake plan, not trying to dwell too much on their code:
@@ -144,14 +145,11 @@ VectorNetwork.prototype = {
 
     while (next) {
       // Start working against our new info, marking our vertex as visited
-      console.log('next', next);
       let currentVertexId = next.vertexId;
       visited[currentVertexId] = true;
 
-      // If we've completed a cycle and we didn't just start, then stop
-      // TODO: This logic is actually broken, should check last corner for `secondCorner`
-      if (currentVertexId === vertexId1 && currentVertexId !== vertexId2) {
-        console.log('early return', next.previousVertexIds);
+      // If we aren't just starting, and we've completed a cycle, then stop
+      if (next.previousVertexIds.length >= 2 && currentVertexId === vertexId1) {
         return next.previousVertexIds;
       }
 
@@ -159,21 +157,20 @@ VectorNetwork.prototype = {
       let adjacentVertexIds = [];
       for (let i = 0; i < this.edgesCount; i += 1) {
         for (let j = 0; j < 2; j += 1) {
-          console.log('inner', this.edges[(i * 4) + (j * 2) + 0], this.edges[(i * 4) + (j * 2) + 1]);
           if (currentVertexId === this.edges[(i * 4) + (j * 2) + 0]) {
             adjacentVertexIds.push(this.edges[(i * 4) + (j * 2) + 1]);
           }
         }
       }
-      console.log('adjacent ids', adjacentVertexIds, currentVertexId, this.edges);
 
       let addToStack = []; // Vertex ids
       for (let i = 0; i < adjacentVertexIds.length; i += 1) {
         let nextVertexId = adjacentVertexIds[i];
-        // If we've visited the vertex before, then ignore it
-        // TODO: Drop the `nextVertexId` check since that encourages both clockwise and counter-clockwise cycles
-        if (visited[nextVertexId] === true &&
-            !(nextVertexId === vertexId1 && currentVertexId !== vertexId2)) {
+        // If we've visited the vertex before and it won't close the cycle, then ignore it
+        //   or if we've visited the vertex before but we're on the second vertex
+        //   (so it must be the first vertex), then ignore it (closes too early)
+        if ((visited[nextVertexId] === true && nextVertexId !== vertexId1) ||
+            (visited[nextVertexId] === true && currentVertexId === vertexId2)) {
           continue;
         }
 
