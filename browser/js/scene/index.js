@@ -34,7 +34,7 @@ Scene.prototype ={
     data.vectorNetworks.forEach(function (vectorNetwork) {
       let vertices = vectorNetwork.vertices;
       for (let i = 0; i < vectorNetwork.verticesCount; i += 1) {
-        that.context.fillStyle = '#000000';
+        that.context.fillStyle = i === data.snappedVertexId ? '#FF00FF' : '#000000';
         that.context.fillRect(
           vertices[i*2 + 0] - VERTEX_SIZE/2,
           vertices[i*2 + 1] - VERTEX_SIZE/2,
@@ -55,11 +55,13 @@ Scene.prototype ={
     }
 
     // Draw our cursor on top of everything
-    that.context.fillStyle = '#000000';
-    this.context.fillRect(
-      data.cursor.x - CURSOR_DOT_SIZE/2,
-      data.cursor.y - CURSOR_DOT_SIZE/2,
-      CURSOR_DOT_SIZE, CURSOR_DOT_SIZE);
+    if (data.snappedVertexId === null) {
+      that.context.fillStyle = '#000000';
+      this.context.fillRect(
+        data.cursor.x - CURSOR_DOT_SIZE/2,
+        data.cursor.y - CURSOR_DOT_SIZE/2,
+        CURSOR_DOT_SIZE, CURSOR_DOT_SIZE);
+    }
   },
 };
 module.exports = Scene;

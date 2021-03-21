@@ -20,7 +20,7 @@ Bindings.prototype = {
     return {
       x: evt.pageX - canvasOffset.left - window.scrollX,
       y: evt.pageY - canvasOffset.top - window.scrollY,
-    }
+    };
   },
   getCanvasOffset: function () {
     // http://youmightnotneedjquery.com/#offset
@@ -70,8 +70,15 @@ Bindings.prototype = {
     // TODO: Handle mouse snapping to vertex
     // If we're on an existing path, then find any nearby vertices
     let mouse = this.getMousePosition(evt);
+    this.data.snappedVertexId = null;
     if (this.data.lastVectorNetwork !== null) {
-      console.log(this.data.lastVectorNetwork.getNearbyVertex(mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE));
+      let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
+        mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
+      if (nearbyVertexId !== null) {
+        mouse.x = this.data.lastVectorNetwork.vertices[nearbyVertexId*2 + 0];
+        mouse.y = this.data.lastVectorNetwork.vertices[nearbyVertexId*2 + 1];
+        this.data.snappedVertexId = nearbyVertexId;
+      }
     }
 
     this.data.cursor.x = mouse.x;

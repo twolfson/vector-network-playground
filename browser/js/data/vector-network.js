@@ -26,7 +26,7 @@ VectorNetwork.prototype = {
     return tmp;
   },
 
-  getNearbyVertex: function (x, y, minimumDistance) {
+  getNearbyVertexId: function (x, y, minimumDistance) {
     // Define our default variables
     let closestVertexId = null;
     let closestVertexDistance = Infinity;
