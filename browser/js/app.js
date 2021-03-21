@@ -44,8 +44,8 @@ App.prototype = {
     this.context.clearRect(0, 0, this.width, this.height);
     this.vectorNetworks.forEach(function (vectorNetwork) {
       let vertices = vectorNetwork.vertices;
-      for (let i = 0; i < vertices.length; i += 2) {
-        that.context.fillRect(vertices[i + 0], vertices[i + 1], 10, 10);
+      for (let i = 0; i < vectorNetwork.verticesCount; i += 1) {
+        that.context.fillRect(vertices[i*2 + 0], vertices[i*2 + 1], 10, 10);
       }
     });
   }
