@@ -4,19 +4,12 @@ const Edge = require('./edge');
 const Polygon = require('polygon');
 const utils = require('./utils');
 const Vec2 = require('vec2');
+const Vertex = require('./vertex');
 
 // Define id tracking singletons
 // DEV: Use non-zero starting value so `if` checks are easier
-let VERTEX_ID = 1;
 let EDGE_ID = 1;
 let FACE_ID = 1;
-
-// Overload Vec2 behavior
-let vec2Overrides = {
-  toString: function () {
-    return `<Vertex ${this.id}>`;
-  }
-};
 
 // Define our constructor
 function VectorNetwork() {
@@ -45,9 +38,7 @@ VectorNetwork.prototype = {
   },
 
   addVertex: function (x, y) {
-    let vertex = new Vec2(x, y);
-    vertex.id = VERTEX_ID++;
-    Object.defineProperties(vertex, vec2Overrides);
+    let vertex = new Vertex(x, y);
     this.vertices.push(vertex);
     return vertex;
   },

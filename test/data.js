@@ -86,7 +86,7 @@ describe('A VectorNetwork adding an existing edge', function () {
   });
 });
 
-describe.skip('A VectorNetwork adding a new and unrelated face', function () {
+describe.only('A VectorNetwork adding a new and unrelated face', function () {
   /*
     D        D
      \      / \
@@ -95,7 +95,26 @@ describe.skip('A VectorNetwork adding a new and unrelated face', function () {
     C        C
   */
   it('adds the face successfully', function () {
+    let network = new VectorNetwork();
+    let vertices = [
+      network.addVertex(0,   0),
+      network.addVertex(10,  0),
+      network.addVertex(5, -10),
+      network.addVertex(5,  10),
+    ];
+    // Lower triangle
+    network.addEdge(vertices[0], vertices[1]);
+    network.addEdge(vertices[1], vertices[2]);
+    network.addEdge(vertices[2], vertices[3]);
 
+    // Upper triangle
+    network.addEdge(vertices[1], vertices[3]);
+    network.addEdge(vertices[3], vertices[0]);
+
+    expect(network.vertices.length).to.equal(4);
+    expect(network.edges.length).to.equal(5);
+    expect(network.faces.length).to.equal(2);
+    console.log(network.faces[0]);
   });
 });
 
