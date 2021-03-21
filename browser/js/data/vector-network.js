@@ -1,18 +1,3 @@
-function DynamicTypedArray(TypedArrayClass, indiciesPerItem) {
-  this.TypedArrayClass = TypedArrayClass;
-  this.count = 0;
-  this.length = 0;
-  this.data = new TypedArrayClass(0);
-}
-DynamicTypedArray.prototype = {
-  add: function () {
-
-  },
-  remove: function () {
-
-  }
-};
-
 // Define our constructor
 function VectorNetwork() {
   this.verticesCount = 0;
