@@ -45,12 +45,22 @@ Bindings.prototype = {
 
   handleClick: function (evt) {
     // TODO: Handle loop closing
+    // Resolve our mouse
     let mouse = this.getMousePosition(evt);
-    let vectorNetwork = this.data.vectorNetworks[0];
-    let vertexId = vectorNetwork.addVertex(mouse.x, mouse.y);
 
-    this.data.lastVertexId = vertexId;
-    this.data.lastVectorNetwork = vectorNetwork;
+    // If we're close to an existing vertex, then close our path
+    if (false) {
+      // TODO: Write out conditional
+      this.data.lastVertexId = null;
+      this.data.lastVectorNetwork = null;
+    // Otherwise, start one/continue to add to it
+    } else {
+      let vectorNetwork = this.data.vectorNetworks[0];
+      let vertexId = vectorNetwork.addVertex(mouse.x, mouse.y);
+
+      this.data.lastVertexId = vertexId;
+      this.data.lastVectorNetwork = vectorNetwork;
+    }
 
     this._queueRender();
   },
