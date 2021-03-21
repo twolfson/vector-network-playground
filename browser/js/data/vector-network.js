@@ -86,12 +86,21 @@ VectorNetwork.prototype = {
     this.edgesCount += 1;
 
     // Update our faces
-    this.updateFaces(vertexId1, vertexId2);
+    this.updateFaces();
 
     // Return our id
     return edgeId;
   },
-  updateFaces: function (vertexId1, vertexId2) {
+  updateFaces: function () {
+    let allSmallestFaces = [];
+    for (let i = 0; i < this.edgesCount; i += 1) {
+      let smallestFace = this.findSmallestFace(this.edges[(i * 4) + 0], this.edges[(i * 4) + 1],);
+      if (smallestFace) {
+        allSmallestFaces.push(smallestFace);
+      }
+    }
+  },
+  findSmallestFace: function (vertexId1, vertexId2) {
     // Half-awake plan, not trying to dwell too much on their code:
     // BFS inherently stops so it won't find all possible faces
     //   which is something we need when splitting faces
@@ -168,22 +177,37 @@ VectorNetwork.prototype = {
         addToStack.push(nextVertexId);
       }
 
-      let newPreviousVertexIds = next.previousVertexIds.slice();
-      newPreviousVertexIds.push(currentVertexId);
+      // TODO: Add back sorting as per notes below
       // TODO: Omit sorting for now, heuristically we prob just want shortest cycle as-is -- unsure where angle comes is
       //   Later: It does actually matter... (e.g. concave faces) but not crtical for initial test cases
       //   If we want to leave a note, prob link to the test case
-      if (addToStack.length > 1) {
-        let previousVertexId = next.previousVertexIds[next.previousVertexIds.length - 1];
-        let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
-        let previousVertexY = that.vertices[(previousVertexId * 2) + 1];
-        addToStack.sort(function (vertexIdA, vertexIdB) {
-          let bX = that.vertices[(vertexIdB * 2) + 0];
-          let bY = that.vertices[(vertexIdB * 2) + 1];
-          return (this_calculateTheta
+      // if (addToStack.length > 1) {
+      //   let previousVertexId = next.previousVertexIds[next.previousVertexIds.length - 1];
+      //   let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
+      //   let previousVertexY = that.vertices[(previousVertexId * 2) + 1];
+      //   addToStack.sort(function (vertexIdA, vertexIdB) {
+      //     let bX = that.vertices[(vertexIdB * 2) + 0];
+      //     let bY = that.vertices[(vertexIdB * 2) + 1];
+      //     return (this_calculateTheta
+      //   });
+      // }
+
+      // TODO: Use >= instead of > for clarity with above scenario
+      if (addToStack.length > 0) {
+        let newPreviousVertexIds = next.previousVertexIds.slice();
+        newPreviousVertexIds.push(currentVertexId);
+        addToStack.forEach(function (vertexId) {
+          stack.push({
+            vertexId: vertexId,
+            previousVertexIds: newPreviousVertexIds,
+          });
         });
       }
+
+      // Move to next item in BFS
+      next = stack.pop();
     }
+    return null;
   },
   pushVertexToPath: function (pathId, x, y) {
     let vertexId = this._addVertex(x, y);
