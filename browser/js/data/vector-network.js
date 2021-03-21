@@ -5,6 +5,10 @@ const Polygon = require('polygon');
 const utils = require('./utils');
 const Vec2 = require('vec2');
 
+const VERTEX_ID = 1;
+const EDGE_ID = 1;
+const FACE_ID = 1;
+
 // Define our constructor
 function VectorNetwork() {
   this.vertices = [];
@@ -32,9 +36,10 @@ VectorNetwork.prototype = {
   },
 
   addVertex: function (x, y) {
-    let point = new Vec2(x, y);
-    this.vertices.push(point);
-    return point;
+    let vertex = new Vec2(x, y);
+    vertex.id = VERTEX_ID++;
+    this.vertices.push(vertex);
+    return vertex;
   },
   addEdge: function (vertex1, vertex2) {
     // If the edge already exists, return it
@@ -47,10 +52,11 @@ VectorNetwork.prototype = {
     }
 
     // Save our new edge
+    edge.id = EDGE_ID++;
     this.edges.push(newEdge);
 
-    // TODO: Update our faces
-    // this.updateFaces();
+    // Update our faces
+    this.updateFaces();
 
     // Return our id
     return newEdge;
@@ -62,8 +68,8 @@ VectorNetwork.prototype = {
     //   We could rant about every face having 3 edges at a minimum but I'm sure there's more nuance to the proof
     //   Back on track: By finding all faces for each edge, we get some duplicates but we also get all faces
     let allSmallestFaces = [];
-    for (let i = 0; i < this.edgesCount; i += 1) {
-      let smallestFace = this.findSmallestFace(this.edges[(i * 4) + 0], this.edges[(i * 4) + 1],);
+    for (let i = 0; i < this.edges.length; i += 1) {
+      let smallestFace = this.findSmallestFace(this.edges[i].vertexA, this.edges[i].vertexB);
       if (smallestFace) {
         allSmallestFaces.push(smallestFace);
       }
@@ -94,7 +100,7 @@ VectorNetwork.prototype = {
     // TODO: Detect added/dropped faces
     console.log('aaa', normalizedFaces);
   },
-  findSmallestFace: function (vertexId1, vertexId2) {
+  findSmallestFace: function (vertex1, vertex2) {
     // Correction: This is a DFS due to using a stack, instead of a BFS which would be a queue
 
     // TODO: Clean up code comment
@@ -110,49 +116,46 @@ VectorNetwork.prototype = {
     //   Can also prob rationalize that we don't need typed data since we aren't dealing with 100k data points
     //   These are added by humans instead so at most 100 ._. (lots of clicking)
 
-    // Verbatim rewrite of blueprint3d
-
-    let stack = []; // {vertexId, previousVertexIds: []}
+    // Heavily based on https://github.com/furnishup/blueprint3d/blob/cac8b62c1a3839e929334bdc125bf8a74866be9e/src/model/floorplan.ts#L369-L494
+    let stack = []; // Stack of `next` items
     let next = {
-      vertexId: vertexId2,
-      previousVertexIds: [vertexId1]
+      vertex: vertex2,
+      previousVertices: [vertex1]
     };
-    let visited = {};
-    visited[vertexId1] = true;
+    let visitedVertexIds = {};
+    visitedVertexIds[vertex1.id] = true;
 
     while (next) {
       // Start working against our new info, marking our vertex as visited
-      let currentVertexId = next.vertexId;
-      visited[currentVertexId] = true;
+      let currentVertex = next.vertex;
+      visitedVertexIds[currentVertex.id] = true;
 
       // If we aren't just starting, and we've completed a cycle, then stop
-      if (next.previousVertexIds.length >= 2 && currentVertexId === vertexId1) {
-        return next.previousVertexIds;
+      if (next.previousVertices.length >= 2 && currentVertex === vertex1) {
+        return next.previousVertices;
       }
 
       // Resolve our adjacent vertex ids
-      let adjacentVertexIds = [];
-      for (let i = 0; i < this.edgesCount; i += 1) {
-        for (let j = 0; j < 2; j += 1) {
-          if (currentVertexId === this.edges[(i * 4) + (j * 2) + 0]) {
-            adjacentVertexIds.push(this.edges[(i * 4) + (j * 2) + 1]);
-          }
+      let adjacentVertices = [];
+      for (let i = 0; i < this.edges.length; i += 1) {
+        if (this.edges[i].contains(currentVertex)) {
+          adjacentVertices.push(this.edges[i].other(currentVertex));
         }
       }
 
-      let addToStack = []; // Vertex ids
-      for (let i = 0; i < adjacentVertexIds.length; i += 1) {
-        let nextVertexId = adjacentVertexIds[i];
+      let verticesToAddToStack = [];
+      for (let i = 0; i < adjacentVertices.length; i += 1) {
+        let adjacentVertex = adjacentVertices[i];
         // If we've visited the vertex before and it won't close the cycle, then ignore it
         //   or if we've visited the vertex before but we're on the second vertex
         //   (so it must be the first vertex), then ignore it (closes too early)
-        if ((visited[nextVertexId] === true && nextVertexId !== vertexId1) ||
-            (visited[nextVertexId] === true && currentVertexId === vertexId2)) {
+        if ((visitedVertexIds[adjacentVertex.id] === true && adjacentVertex !== vertex1) ||
+            (visitedVertexIds[adjacentVertex.id] === true && currentVertex === vertex2)) {
           continue;
         }
 
         // Add our unseen adjacent vertex to ones to explore
-        addToStack.push(nextVertexId);
+        verticesToAddToStack.push(adjacentVertex);
       }
 
       // TODO: Add back sorting as per notes below
@@ -160,7 +163,7 @@ VectorNetwork.prototype = {
       //   Later: It does actually matter... (e.g. concave faces) but not crtical for initial test cases
       //   If we want to leave a note, prob link to the test case
       // if (addToStack.length >= 2) {
-      //   let previousVertexId = next.previousVertexIds[next.previousVertexIds.length - 1];
+      //   let previousVertexId = next.previousVertices[next.previousVertices.length - 1];
       //   let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
       //   let previousVertexY = that.vertices[(previousVertexId * 2) + 1];
       //   addToStack.sort(function (vertexIdA, vertexIdB) {
@@ -171,12 +174,12 @@ VectorNetwork.prototype = {
       // }
 
       // Push our new stack items onto the stack
-      let newPreviousVertexIds = next.previousVertexIds.slice();
-      newPreviousVertexIds.push(currentVertexId);
-      addToStack.forEach(function (vertexId) {
+      let newPreviousVertices = next.previousVertices.slice();
+      newPreviousVertices.push(currentVertex);
+      verticesToAddToStack.forEach(function (vertex) {
         stack.push({
-          vertexId: vertexId,
-          previousVertexIds: newPreviousVertexIds,
+          vertex: vertex,
+          previousVertices: newPreviousVertices,
         });
       });
 
