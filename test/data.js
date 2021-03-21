@@ -7,11 +7,13 @@ describe('A VectorNetwork with an open path', function () {
   // A-B-C
   it('has no faces', function () {
     let network = new VectorNetwork();
-    network.startPath();
-    network.addVertexToPath(0, 0);
-    network.addVertexToPath(10, 0);
-    network.addVertexToPath(20, 0);
-    network.closePath();
+    let vertexIds = [
+      network.addVertex(0,  0),
+      network.addVertex(10, 0),
+      network.addVertex(20, 0),
+    ];
+    network.addEdge(vertexIds[0], vertexIds[1]);
+    network.addEdge(vertexIds[1], vertexIds[2]);
 
     expect(this.network.verticesCount).to.equal(3);
     expect(this.network.edgesCount).to.equal(2);
@@ -27,14 +29,17 @@ describe('A VectorNetwork with a closed path', function () {
   */
   it('has 1 face', function () {
     let network = new VectorNetwork();
-    network.startPath();
-    let firstVertexId = network.path.addVertex(0, 0);
-    network.addVertexToPath(10, 0);
-    network.addVertexToPath(0, 10);
-    network.closePath(firstVertexId);
+    let vertexIds = [
+      network.addVertex(0,   0),
+      network.addVertex(10,  0),
+      network.addVertex(0,  10),
+    ];
+    network.addEdge(vertexIds[0], vertexIds[1]);
+    network.addEdge(vertexIds[1], vertexIds[2]);
+    network.addEdge(vertexIds[2], vertexIds[0]);
 
     expect(this.network.verticesCount).to.equal(3);
-    expect(this.network.edgesCount).to.equal(2);
+    expect(this.network.edgesCount).to.equal(3);
     expect(this.network.facesCount).to.equal(1);
   });
 });
@@ -47,16 +52,37 @@ describe('A VectorNetwork with a closed path and excess', function () {
   */
   it('has 1 face', function () {
     let network = new VectorNetwork();
-    network.startPath();
-    network.addVertexToPath(0, 0);
-    let secondVertexId = network.addVertexToPath(10, 0);
-    network.addVertexToPath(20, 0);
-    network.addVertexToPath(10, 10);
-    network.closePath(secondVertexId);
+    let vertexIds = [
+      network.addVertex(0,   0),
+      network.addVertex(10,  0),
+      network.addVertex(20,  0),
+      network.addVertex(10, 10),
+    ];
+    network.addEdge(vertexIds[0], vertexIds[1]);
+    network.addEdge(vertexIds[1], vertexIds[2]);
+    network.addEdge(vertexIds[2], vertexIds[3]);
+    network.addEdge(vertexIds[3], vertexIds[1]);
 
     expect(this.network.verticesCount).to.equal(4);
     expect(this.network.edgesCount).to.equal(4);
     expect(this.network.facesCount).to.equal(1);
+  });
+});
+
+describe.skip('A VectorNetwork adding an existing edge', function () {
+  // A-B
+  it('does nothing', function () {
+    let network = new VectorNetwork();
+    let vertexIds = [
+      network.addVertex(0,   0),
+      network.addVertex(10,  0),
+    ];
+    network.addEdge(vertexIds[0], vertexIds[1]);
+    network.addEdge(vertexIds[1], vertexIds[0]);
+
+    expect(this.network.verticesCount).to.equal(1);
+    expect(this.network.edgesCount).to.equal(1);
+    expect(this.network.facesCount).to.equal(0);
   });
 });
 
@@ -89,6 +115,19 @@ describe.skip('A VectorNetwork splitting an edge inside a closed path', function
   D---C      D-E-C
   */
   it('adds no new faces', function () {
+
+  });
+});
+
+describe.skip('A VectorNetwork adding an edge with overlapping paths', function () {
+  /*
+  A   C      A   C
+   \          \ /
+    \    ->    E
+     \        / \
+      B      D   B
+  */
+  it('splits the edge', function () {
 
   });
 });
