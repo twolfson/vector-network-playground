@@ -81,6 +81,13 @@ VectorNetwork.prototype = {
     this.edges[(edgeId * 2) + 1] = vertexId2;
     this.edgesCount += 1;
 
+    // Update our faces
+    this.updateFaces(vertexId1, vertexId2);
+
+    // Return our id
+    return edgeId;
+  },
+  updateFaces: function (vertexId1, vertexId2) {
     // TODO: Clean up code comment
     // Trying to glean a decent strategy from this: https://github.com/furnishup/blueprint3d/blob/cac8b62c1a3839e929334bdc125bf8a74866be9e/src/model/floorplan.ts#L369-L494
     // 1. Find all possible smallest faces - smallest by performing BFS then prioritizing smallest angles
@@ -90,10 +97,25 @@ VectorNetwork.prototype = {
     // TODO: How do we identify when we subdivide a face so we can persist the fills?
     //   They don't do that in blueprint3d
     //   Something about new face with all edges except new edge being contained by an existing face?
-    // If a vertex is part of another edge
+    // TODO: Use dynamically sized array
+    let adjacentVertexIds = new Uint8Array(100 * 8);
+    // DEV: Ideally would use boolean field but this is the simplest we've got
+    let seenVertexIds = new Uint8Array(this.verticesCount);
+    for (let vertexId = 0; vertexId < this.verticesCount; vertexId += 1) {
+      // Find all adjacent vertices
+      let adjacentVertexIdsIndex = 0;
+      adjacentVertexIds.fill(0); // Not necessary but nice to indicate data reset
 
-    // Return our id
-    return edgeId;
+      for (let edgeId = 0; edgeId < this.edgesCount; edgeId += 1) {
+        if (this.edges[(edgeId * 2) + 0] === vertexId) {
+          adjacentVertexIds[adjacentVertexIdsIndex] = this.edges[(edgeId * 2) + 1];
+          adjacentVertexIdsIndex += 1;
+        } else if (this.edges[(edgeId * 2) + 1] === vertexId) {
+          adjacentVertexIds[adjacentVertexIdsIndex] = this.edges[(edgeId * 2) + 0];
+          adjacentVertexIdsIndex += 1;
+        }
+      }
+    }
   },
   pushVertexToPath: function (pathId, x, y) {
     let vertexId = this._addVertex(x, y);

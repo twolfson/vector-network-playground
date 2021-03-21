@@ -21,7 +21,7 @@ describe('A VectorNetwork with an open path', function () {
   });
 });
 
-describe('A VectorNetwork with a closed path', function () {
+describe.only('A VectorNetwork with a closed path', function () {
   /*
   A-B
   |/
