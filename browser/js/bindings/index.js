@@ -51,23 +51,28 @@ Bindings.prototype = {
     let mouse = this.getMousePosition(evt);
 
     // If we're close to an existing vertex, then close our path
-    if (false) {
-      // TODO: Write out conditional
-      this.data.lastVertexId = null;
-      this.data.lastVectorNetwork = null;
-    // Otherwise, start one/continue to add to it
-    } else {
-      let vectorNetwork = this.data.vectorNetworks[0];
-      let vertexId = vectorNetwork.addVertex(mouse.x, mouse.y);
+    if (this.data.lastVectorNetwork !== null) {
+      let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
+        mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
+      if (nearbyVertexId !== null) {
+        this.data.lastVertexId = null;
+        this.data.lastVectorNetwork = null;
 
-      this.data.lastVertexId = vertexId;
-      this.data.lastVectorNetwork = vectorNetwork;
+        this._queueRender();
+        return;
+      }
     }
+
+    // Otherwise, start one/continue to add to it
+    let vectorNetwork = this.data.vectorNetworks[0];
+    let vertexId = vectorNetwork.addVertex(mouse.x, mouse.y);
+
+    this.data.lastVertexId = vertexId;
+    this.data.lastVectorNetwork = vectorNetwork;
 
     this._queueRender();
   },
   handleMousemove: function (evt) {
-    // TODO: Handle mouse snapping to vertex
     // If we're on an existing path, then find any nearby vertices
     let mouse = this.getMousePosition(evt);
     this.data.snappedVertexId = null;
