@@ -7,17 +7,17 @@ describe('A VectorNetwork with an open path', function () {
   // A-B-C
   it('has no faces', function () {
     let network = new VectorNetwork();
-    let vertexIds = [
+    let vertices = [
       network.addVertex(0,  0),
       network.addVertex(10, 0),
       network.addVertex(20, 0),
     ];
-    network.addEdge(vertexIds[0], vertexIds[1]);
-    network.addEdge(vertexIds[1], vertexIds[2]);
+    network.addEdge(vertices[0], vertices[1]);
+    network.addEdge(vertices[1], vertices[2]);
 
-    expect(network.verticesCount).to.equal(3);
-    expect(network.edgesCount).to.equal(2);
-    expect(network.facesCount).to.equal(0);
+    expect(network.vertices.length).to.equal(3);
+    expect(network.edges.length).to.equal(2);
+    expect(network.faces.length).to.equal(0);
   });
 });
 
@@ -29,20 +29,18 @@ describe.only('A VectorNetwork with a closed path', function () {
   */
   it('has 1 face', function () {
     let network = new VectorNetwork();
-    let vertexIds = [
+    let vertices = [
       network.addVertex(0,   0),
       network.addVertex(10,  0),
       network.addVertex(0,  10),
     ];
-    network.addEdge(vertexIds[0], vertexIds[1]);
-    network.addEdge(vertexIds[1], vertexIds[2]);
-    network.addEdge(vertexIds[2], vertexIds[0]);
+    network.addEdge(vertices[0], vertices[1]);
+    network.addEdge(vertices[1], vertices[2]);
+    network.addEdge(vertices[2], vertices[0]);
 
-    // console.log('Smallest face:', network.findSmallestFace(vertexIds[0], vertexIds[1]));
-
-    expect(network.verticesCount).to.equal(3);
-    expect(network.edgesCount).to.equal(3);
-    expect(network.facesCount).to.equal(1);
+    expect(network.vertices.length).to.equal(3);
+    expect(network.edges.length).to.equal(3);
+    expect(network.faces.length).to.equal(1);
   });
 });
 
@@ -54,20 +52,20 @@ describe('A VectorNetwork with a closed path and excess', function () {
   */
   it('has 1 face', function () {
     let network = new VectorNetwork();
-    let vertexIds = [
+    let vertices = [
       network.addVertex(0,   0),
       network.addVertex(10,  0),
       network.addVertex(20,  0),
       network.addVertex(10, 10),
     ];
-    network.addEdge(vertexIds[0], vertexIds[1]);
-    network.addEdge(vertexIds[1], vertexIds[2]);
-    network.addEdge(vertexIds[2], vertexIds[3]);
-    network.addEdge(vertexIds[3], vertexIds[1]);
+    network.addEdge(vertices[0], vertices[1]);
+    network.addEdge(vertices[1], vertices[2]);
+    network.addEdge(vertices[2], vertices[3]);
+    network.addEdge(vertices[3], vertices[1]);
 
-    expect(network.verticesCount).to.equal(4);
-    expect(network.edgesCount).to.equal(4);
-    // expect(network.facesCount).to.equal(1);
+    expect(network.vertices.length).to.equal(4);
+    expect(network.edges.length).to.equal(4);
+    // expect(network.faces.length).to.equal(1);
   });
 });
 
@@ -75,16 +73,16 @@ describe.skip('A VectorNetwork adding an existing edge', function () {
   // A-B
   it('does nothing', function () {
     let network = new VectorNetwork();
-    let vertexIds = [
+    let vertices = [
       network.addVertex(0,   0),
       network.addVertex(10,  0),
     ];
-    network.addEdge(vertexIds[0], vertexIds[1]);
-    network.addEdge(vertexIds[1], vertexIds[0]);
+    network.addEdge(vertices[0], vertices[1]);
+    network.addEdge(vertices[1], vertices[0]);
 
-    expect(network.verticesCount).to.equal(1);
-    expect(network.edgesCount).to.equal(1);
-    // expect(network.facesCount).to.equal(0);
+    expect(network.vertices.length).to.equal(1);
+    expect(network.edges.length).to.equal(1);
+    // expect(network.faces.length).to.equal(0);
   });
 });
 
