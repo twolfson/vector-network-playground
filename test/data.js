@@ -114,7 +114,7 @@ describe.only('A VectorNetwork adding a new and unrelated face', function () {
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(5);
     expect(network.faces.length).to.equal(2);
-    console.log(network.faces[0]);
+    console.log(network.faces[0].hash());
   });
 });
 

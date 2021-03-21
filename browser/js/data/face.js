@@ -13,6 +13,11 @@ function Face(vertices) {
   return retObj;
 }
 Face.prototype = {
+  hash: function () {
+    return this.points.map(function (vertex) {
+      return vertex.id;
+    }).join('-');
+  },
   toString: function () {
     return `<Face ${this.id}>`;
   }

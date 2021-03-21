@@ -89,8 +89,8 @@ VectorNetwork.prototype = {
     });
 
     //  Add cycle reversing for clockwise faces
-    let normalizedFaces = deduplicatedFaces.map(function (_face) {
-      let face = new Polygon(_face);
+    let normalizedFaces = deduplicatedFaces.map(function (vertices) {
+      let face = new Face(vertices);
       return face.rewind(false); // false means make all faces counter-clockwise
     });
 
