@@ -26,6 +26,27 @@ VectorNetwork.prototype = {
     return tmp;
   },
 
+  getNearbyVertex: function (x, y, minimumDistance) {
+    // Define our default variables
+    let closestVertexId = null;
+    let closestVertexDistance = Infinity;
+
+    // Find the closest vertex
+    for (let i = 0; i < this.verticesCount; i += 1) {
+      // Using Euclidean distance makes the most sense
+      let distance = Math.sqrt(
+          Math.pow(x - this.vertices[i*2 + 0], 2) +
+          Math.pow(y - this.vertices[i*2 + 1], 2));
+      if (distance <= minimumDistance && distance < closestVertexDistance) {
+        closestVertexDistance = distance;
+        closestVertexId = i;
+      }
+    }
+
+    // Return our closest vertex
+    return closestVertexId;
+  },
+
   addVertex: function (x, y) {
     // Resize our data to handle the new element
     let vertexId = this.verticesCount;
@@ -38,7 +59,7 @@ VectorNetwork.prototype = {
 
     // Return our id
     return vertexId;
-  }
+  },
 };
 
 // Export our constructor

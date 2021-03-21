@@ -1,3 +1,5 @@
+const NEARBY_VERTEX_DISTANCE = 10;
+
 function Bindings({ canvasEl, data, scene }) {
   // Save our parameters
   this.canvasEl = canvasEl;
@@ -66,7 +68,12 @@ Bindings.prototype = {
   },
   handleMousemove: function (evt) {
     // TODO: Handle mouse snapping to vertex
+    // If we're on an existing path, then find any nearby vertices
     let mouse = this.getMousePosition(evt);
+    if (this.data.lastVectorNetwork !== null) {
+      console.log(this.data.lastVectorNetwork.getNearbyVertex(mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE));
+    }
+
     this.data.cursor.x = mouse.x;
     this.data.cursor.y = mouse.y;
 
