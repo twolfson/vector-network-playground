@@ -2,7 +2,6 @@
 const assert = require('assert');
 const Edge = require('./edge');
 const Polygon = require('polygon');
-const utils = require('./utils');
 const Vec2 = require('vec2');
 const Vertex = require('./vertex');
 
