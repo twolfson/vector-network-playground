@@ -1,5 +1,5 @@
 // Load in our dependencies
-const VectorNetwork = require('./data/vector-network');
+const Data = require('./data');
 const Scene = require('./scene');
 
 // Define our core application
@@ -7,7 +7,7 @@ function App(canvasEl) {
   // Define common properties
   this.canvasEl = canvasEl;
   this.context = canvasEl.getContext('2d');
-  this.data = {vectorNetworks: [new VectorNetwork()]};
+  this.data = new Data();
   this.scene = new Scene({
     context: this.context, data: this.data,
     width: null, height: null
