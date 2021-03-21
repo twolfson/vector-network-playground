@@ -35,7 +35,7 @@ Scene.prototype ={
     });
 
     // If we have a last vertex, draw an edge from it
-    if (data.lastVertexId) {
+    if (data.lastVertexId !== null) {
       let lastVertexX = data.lastVectorNetwork.vertices[data.lastVertexId * 2 + 0];
       let lastVertexY = data.lastVectorNetwork.vertices[data.lastVertexId * 2 + 1];
 
