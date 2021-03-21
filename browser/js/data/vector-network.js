@@ -9,7 +9,16 @@ function VectorNetwork() {
   this.vertices = new Float32Array(100 * 2);
   this.edgesCount = 0;
   this.edges = new Uint8Array(100 * 2);
-  this.paths = [];
+  // TODO: Move these notes somewhere... maybe architecture decisions
+  // Sooo yea... let's talk through this
+  // We can have a lot of faces so it's not performant to use anything other than typed data
+  // but we also don't know the length of data in theory
+  // Our only good choice is to use a terminator value like in strings
+  // Ugh, sounds like such a pain to iterate over...
+  // Can also do something like <length, id1, id2, ...>
+  // Yea, that sounds like a little bit more work to maintain but much saner for inner loops
+  // There's prob another option that I'm missing at the moment
+  this.faces = [];
 }
 VectorNetwork.prototype = {
   getNearbyVertexId: function (x, y, minimumDistance) {
@@ -53,8 +62,14 @@ VectorNetwork.prototype = {
     return vertexId;
   },
   addEdge: function (vertexId1, vertexId2) {
-    // TODO: Verify the edge doesn't already exist
+    // If the edge already exists, return it
     assert.notEqual(vertexId1, vertexId2, `Vertex ids are equal: ${vertexId1}, ${vertexId2}`);
+    for (let i = 0; i < this.edgesCount; i += 1) {
+      if ((vertexId1 === this.edges[(i * 2) + 0] && vertexId2 === this.edges[(i * 2) + 1]) ||
+          (vertexId1 === this.edges[(i * 2) + 1] && vertexId2 === this.edges[(i * 2) + 0])) {
+        return i;
+      }
+    }
 
     // Resize our data to handle the new element
     let edgeId = this.edgesCount;

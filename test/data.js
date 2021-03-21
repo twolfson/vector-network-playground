@@ -120,8 +120,9 @@ describe.skip('A VectorNetwork splitting an edge inside a closed path', function
 });
 
 describe.skip('A VectorNetwork adding an edge with overlapping paths', function () {
+  // DEV: We must have C be connected to A initially, otherwise they aren't part of the same network technically
   /*
-  A   C      A   C
+  A---C      A---C
    \          \ /
     \    ->    E
      \        / \
