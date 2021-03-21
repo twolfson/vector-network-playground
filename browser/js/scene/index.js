@@ -1,3 +1,6 @@
+const VERTEX_SIZE = 10;
+const CURSOR_DOT_SIZE = 5;
+
 function Scene({ context, data, width, height }) {
   // Define our common properties
   this.context = context;
@@ -32,7 +35,10 @@ Scene.prototype ={
       let vertices = vectorNetwork.vertices;
       for (let i = 0; i < vectorNetwork.verticesCount; i += 1) {
         that.context.fillStyle = '#000000';
-        that.context.fillRect(vertices[i*2 + 0], vertices[i*2 + 1], 10, 10);
+        that.context.fillRect(
+          vertices[i*2 + 0] - VERTEX_SIZE/2,
+          vertices[i*2 + 1] - VERTEX_SIZE/2,
+          VERTEX_SIZE, VERTEX_SIZE);
       }
     });
 
@@ -50,7 +56,10 @@ Scene.prototype ={
 
     // Draw our cursor on top of everything
     that.context.fillStyle = '#000000';
-    this.context.fillRect(data.cursor.x, data.cursor.y, 5, 5);
+    this.context.fillRect(
+      data.cursor.x - CURSOR_DOT_SIZE/2,
+      data.cursor.y - CURSOR_DOT_SIZE/2,
+      CURSOR_DOT_SIZE, CURSOR_DOT_SIZE);
   },
 };
 module.exports = Scene;
