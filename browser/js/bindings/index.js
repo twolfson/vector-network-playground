@@ -34,6 +34,7 @@ Bindings.prototype = {
   addEventListeners: function () {
     return [
       this._addEventListener('click', this.handleClick),
+      this._addEventListener('mousemove', this.handleMousemove),
     ];
   },
 
@@ -41,6 +42,12 @@ Bindings.prototype = {
     let mouse = this.getMousePosition(evt);
     let vectorNetwork = this.data.vectorNetworks[0];
     vectorNetwork.addVertex(mouse.x, mouse.y);
+  },
+  handleMousemove: function (evt) {
+    // TODO: Handle mouse snapping
+    let mouse = this.getMousePosition(evt);
+    this.data.cursor.x = mouse.x;
+    this.data.cursor.y = mouse.y;
   }
 }
 module.exports = Bindings;
