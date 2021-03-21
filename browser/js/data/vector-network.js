@@ -47,7 +47,7 @@ VectorNetwork.prototype = {
   addVertex: function (x, y) {
     let vertex = new Vec2(x, y);
     vertex.id = VERTEX_ID++;
-    Object.assign(vertex, vec2Overrides);
+    Object.defineProperties(vertex, vec2Overrides);
     this.vertices.push(vertex);
     return vertex;
   },
@@ -93,7 +93,7 @@ VectorNetwork.prototype = {
       // If our face has been seen before, skip it
       // [2, 0, 1] -> [0, 1, 2] -> 0-1-2
       // DEV: Another downside of this is we combine clockwise and counter-clockwise faces
-      //   so instead of filtering out clockwise, we need to reverse them
+      //   so instead of filtering out clockwise, we need to reverse them later on
       let faceHash = face.slice().map(function (vertex) { return vertex.id; }).sort().join('-');
       if (seenFaces[faceHash] === true) {
         return;
@@ -104,11 +104,16 @@ VectorNetwork.prototype = {
       deduplicatedFaces.push(face);
     });
 
-    // TODO: Add cycle reversing for clockwise faces
-    let normalizedFaces = deduplicatedFaces;
+    //  Add cycle reversing for clockwise faces
+    let normalizedFaces = deduplicatedFaces.map(function (_face) {
+      let face = new Polygon(_face);
+      return face.rewind(false); // false means make all faces counter-clockwise
+    });
 
     // TODO: Detect added/dropped faces
-    console.log('aaa', normalizedFaces);
+
+    // Save our faces
+    this.faces = normalizedFaces;
   },
   findSmallestFace: function (vertex1, vertex2) {
     // Correction: This is a DFS due to using a stack, instead of a BFS which would be a queue
