@@ -18,7 +18,8 @@ function VectorNetwork() {
   // Can also do something like <length, id1, id2, ...>
   // Yea, that sounds like a little bit more work to maintain but much saner for inner loops
   // There's prob another option that I'm missing at the moment
-  this.faces = [];
+  this.facesCount = 0;
+  this.faces = new Uint8Array(100 * 8 /* Impossible to guess length so doing our best */);
 }
 VectorNetwork.prototype = {
   getNearbyVertexId: function (x, y, minimumDistance) {
@@ -79,6 +80,17 @@ VectorNetwork.prototype = {
     this.edges[(edgeId * 2) + 0] = vertexId1;
     this.edges[(edgeId * 2) + 1] = vertexId2;
     this.edgesCount += 1;
+
+    // TODO: Clean up code comment
+    // Trying to glean a decent strategy from this: https://github.com/furnishup/blueprint3d/blob/cac8b62c1a3839e929334bdc125bf8a74866be9e/src/model/floorplan.ts#L369-L494
+    // 1. Find all possible smallest faces - smallest by performing BFS then prioritizing smallest angles
+    // 2. Remove duplicate faces with different starting edge (cycles room, hashes into `id1-id2-id3-...`)
+    // 3. Remove clockwise faces (since all faces will have both clockwise and counter-clockwise variants)
+    // 4. Disco
+    // TODO: How do we identify when we subdivide a face so we can persist the fills?
+    //   They don't do that in blueprint3d
+    //   Something about new face with all edges except new edge being contained by an existing face?
+    // If a vertex is part of another edge
 
     // Return our id
     return edgeId;

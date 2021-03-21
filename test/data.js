@@ -17,7 +17,7 @@ describe('A VectorNetwork with an open path', function () {
 
     expect(network.verticesCount).to.equal(3);
     expect(network.edgesCount).to.equal(2);
-    // expect(network.facesCount).to.equal(0);
+    expect(network.facesCount).to.equal(0);
   });
 });
 
@@ -40,7 +40,7 @@ describe('A VectorNetwork with a closed path', function () {
 
     expect(network.verticesCount).to.equal(3);
     expect(network.edgesCount).to.equal(3);
-    // expect(network.facesCount).to.equal(1);
+    expect(network.facesCount).to.equal(1);
   });
 });
 
