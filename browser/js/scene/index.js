@@ -41,7 +41,7 @@ Scene.prototype ={
           return;
         }
 
-        // Otherwise, draw our path
+        // Otherwise, trace our path
         that.context.beginPath();
         let firstVertexId = path.vertexIds[0];
         that.context.moveTo(vertices[firstVertexId*2 + 0], vertices[firstVertexId*2 + 1]);
@@ -49,6 +49,13 @@ Scene.prototype ={
           let vertexId = path.vertexIds[i];
           that.context.lineTo(vertices[vertexId*2 + 0], vertices[vertexId*2 + 1]);
         }
+
+        // If we're more than a line, loop back to the start
+        if (path.vertexIdCount >= 3) {
+          that.context.lineTo(vertices[firstVertexId*2 + 0], vertices[firstVertexId*2 + 1]);
+        }
+
+        // Draw our line
         that.context.strokeStyle = '#000000';
         that.context.stroke();
       });
