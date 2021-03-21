@@ -1,14 +1,9 @@
 // Load in our dependencies
 const assert = require('assert');
 const Edge = require('./edge');
-const Polygon = require('polygon');
+const Face = require('./face');
 const Vec2 = require('vec2');
 const Vertex = require('./vertex');
-
-// Define id tracking singletons
-// DEV: Use non-zero starting value so `if` checks are easier
-let EDGE_ID = 1;
-let FACE_ID = 1;
 
 // Define our constructor
 function VectorNetwork() {
@@ -44,15 +39,14 @@ VectorNetwork.prototype = {
   addEdge: function (vertex1, vertex2) {
     // If the edge already exists, return it
     assert.notEqual(vertex1, vertex2, 'Vertices are the same');
-    let newEdge = new Edge(vertex1, vertex2);
     for (let i = 0; i < this.edges.length; i += 1) {
-      if (newEdge.matches(this.edges[i])) {
+      if (this.edges[i].matches(vertex1, vertex2)) {
         return this.edges[i];
       }
     }
 
     // Save our new edge
-    newEdge.id = EDGE_ID++;
+    let newEdge = new Edge(vertex1, vertex2);
     this.edges.push(newEdge);
 
     // Update our faces
