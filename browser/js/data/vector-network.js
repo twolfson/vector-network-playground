@@ -5,9 +5,18 @@ const Polygon = require('polygon');
 const utils = require('./utils');
 const Vec2 = require('vec2');
 
-const VERTEX_ID = 1;
-const EDGE_ID = 1;
-const FACE_ID = 1;
+// Define id tracking singletons
+// DEV: Use non-zero starting value so `if` checks are easier
+let VERTEX_ID = 1;
+let EDGE_ID = 1;
+let FACE_ID = 1;
+
+// Overload Vec2 behavior
+let vec2Overrides = {
+  toString: function () {
+    return `<Vertex ${this.id}>`;
+  }
+};
 
 // Define our constructor
 function VectorNetwork() {
@@ -38,6 +47,7 @@ VectorNetwork.prototype = {
   addVertex: function (x, y) {
     let vertex = new Vec2(x, y);
     vertex.id = VERTEX_ID++;
+    Object.assign(vertex, vec2Overrides);
     this.vertices.push(vertex);
     return vertex;
   },
@@ -52,7 +62,7 @@ VectorNetwork.prototype = {
     }
 
     // Save our new edge
-    edge.id = EDGE_ID++;
+    newEdge.id = EDGE_ID++;
     this.edges.push(newEdge);
 
     // Update our faces
@@ -84,7 +94,7 @@ VectorNetwork.prototype = {
       // [2, 0, 1] -> [0, 1, 2] -> 0-1-2
       // DEV: Another downside of this is we combine clockwise and counter-clockwise faces
       //   so instead of filtering out clockwise, we need to reverse them
-      let faceHash = face.slice().sort().join('-');
+      let faceHash = face.slice().map(function (vertex) { return vertex.id; }).sort().join('-');
       if (seenFaces[faceHash] === true) {
         return;
       }
