@@ -86,6 +86,18 @@ describe.skip('A VectorNetwork adding an existing edge', function () {
   });
 });
 
+describe.skip('A VectorNetwork adding a new and unrelated face', function () {
+  /*
+    D        D
+     \      / \
+  A---B    A---B
+   \ /  ->  \ /
+    C        C
+  */
+  it('adds the face successfully', function () {
+
+  });
+});
 describe.skip('A VectorNetwork adding an edge inside a closed path', function () {
   /*
   A-B      A-B

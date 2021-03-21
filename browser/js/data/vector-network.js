@@ -92,6 +92,24 @@ VectorNetwork.prototype = {
     return edgeId;
   },
   updateFaces: function (vertexId1, vertexId2) {
+    // Half-awake plan, not trying to dwell too much on their code:
+    // BFS inherently stops so it won't find all possible faces
+    //   which is something we need when splitting faces
+    // Instead, we should target finding the smallest face for each edge
+    // and inherently we should get every face covered that way regardless
+    // there's never a scenario when edges == faces
+    // due to inherently needing 3 edges per 1 face at a minimum
+    // Thus, there will always be 1 edge that is exclusive to a face
+    // and that means if we search by edges, then we'll find all the faces
+
+    // So what blueprint3d is really doing:
+    // For each edge, find its smallest matching face
+    // We will get some duplicates but also we're guaranteed to find all faces
+
+    // Then remove duplicates and clockwise/counter-clockwise duplicates
+
+    // Then celebrate our faces
+
     // TODO: Clean up code comment
     // Trying to glean a decent strategy from this: https://github.com/furnishup/blueprint3d/blob/cac8b62c1a3839e929334bdc125bf8a74866be9e/src/model/floorplan.ts#L369-L494
     // 1. Find all possible smallest faces - smallest by performing BFS then prioritizing smallest angles
