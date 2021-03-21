@@ -104,7 +104,31 @@ VectorNetwork.prototype = {
         allSmallestFaces.push(smallestFace);
       }
     }
-    console.log('aaa', allSmallestFaces);
+
+    // Deduplicate our faces
+    // DEV: We could do this in `O(n)` by doing cycles instead of `nlogn` sorting but meh, faces aren't *that* big
+    let deduplicatedFaces = [];
+    let seenFaces = {};
+    allSmallestFaces.forEach(function (face) {
+      // If our face has been seen before, skip it
+      // [2, 0, 1] -> [0, 1, 2] -> 0-1-2
+      // DEV: Another downside of this is we combine clockwise and counter-clockwise faces
+      //   so instead of filtering out clockwise, we need to reverse them
+      let faceHash = face.slice().sort().join('-');
+      if (seenFaces[faceHash] === true) {
+        return;
+      }
+      seenFaces[faceHash] = true;
+
+      // Otherwise, save our deduplicated face
+      deduplicatedFaces.push(face);
+    });
+
+    // TODO: Add cycle reversing for clockwise faces
+    let normalizedFaces = deduplicatedFaces;
+
+    // TODO: Detect added/dropped faces
+    console.log('aaa', normalizedFaces);
   },
   findSmallestFace: function (vertexId1, vertexId2) {
     // Correction: This is a DFS due to using a stack, instead of a BFS which would be a queue
