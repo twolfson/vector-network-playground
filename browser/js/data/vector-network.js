@@ -126,8 +126,43 @@ VectorNetwork.prototype = {
         return next.previousVertexIds;
       }
 
+      // Resolve our adjacent vertex ids
+      let adjacentVertexIds = [];
+      for (let i = 0; i < this.edgesCount; i += 1) {
+        for (let j = 0; j < 2; j += 2) {
+          if (vertexId1 === this.edges[(i * 4) + (j * 2) + 0]) {
+            adjacentVertexIds.push(this.edges[(i * 4) + (j * 2) + 1]);
+          }
+        }
+      }
+
       let addToStack = []; // Vertex ids
-      let adjacentVertexds = [];
+      for (let i = 0; i < adjacentVertexIds.length; i += 1) {
+        let nextVertexId = adjacentVertexIds[i];
+        // If we've visited the vertex before, then ignore it
+        // TODO: Drop the `nextVertexId` check since that encourages both clockwise and counter-clockwise cycles
+        if (visited[nextVertexId] === true &&
+            !(nextVertexId === vertexId1 && currentVertexId !== vertexId2)) {
+          continue;
+        }
+
+        // Add our unseen adjacent vertex to ones to explore
+        addToStack.push(nextVertexId);
+      }
+
+      let newPreviousVertexIds = next.previousVertexIds.slice();
+      newPreviousVertexIds.push(currentVertexId);
+      // TODO: Omit sorting for now, heuristically we prob just want shortest cycle as-is -- unsure where angle comes is
+      if (addToStack.length > 1) {
+        let previousVertexId = next.previousVertexIds[next.previousVertexIds.length - 1];
+        let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
+        let previousVertexY = that.vertices[(previousVertexId * 2) + 1];
+        addToStack.sort(function (vertexIdA, vertexIdB) {
+          let bX = that.vertices[(vertexIdB * 2) + 0];
+          let bY = that.vertices[(vertexIdB * 2) + 1];
+          return (this_calculateTheta
+        });
+      }
     }
   },
   pushVertexToPath: function (pathId, x, y) {
