@@ -4,7 +4,7 @@ function Bindings({ canvasEl, data }) {
   this.data = data;
 
   // Bind our listeners
-  this.addEventListeners();
+  this._teardownFns = this.addEventListeners();
 
   // TODO: Remove dev vertices
   let vectorNetwork = this.data.vectorNetworks[0];
@@ -18,8 +18,17 @@ function Bindings({ canvasEl, data }) {
   setTimeout(() => vectorNetwork.addVertex(280, 20), 15e3);
 }
 Bindings.prototype = {
+  _addEventListener: function (eventType, fn) {
+    let boundFn = fn.bind(this);
+    this.canvasEl.addEventListener(eventType, boundFn);
+    return function removeListener () {
+      this.canvasEl.removeEventListener(eventType, boundFn);
+    };
+  },
   addEventListeners: function () {
-    console.log('wat', this.canvasEl.addEventListener('click', this.handleClick));
+    return [
+      this._addEventListener('click', this.handleClick),
+    ];
   },
 
   handleClick: function (evt) {
