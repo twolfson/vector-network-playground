@@ -90,8 +90,8 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
   /*
     D---E       D---E
      \           \ /
-  A---B       A---B
-   \ /    ->   \ /
+  A---B   ->  A---B
+   \ /         \ /
     C           C
   */
   it('adds the face successfully', function () {
@@ -126,11 +126,11 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
 
 describe.only('A VectorNetwork adding a new and unrelated face with some overlapy', function () {
   /*
-    D        D
-     \      / \
-  A---B    A---B
-   \ /  ->  \ /
-    C        C
+    D          D
+     \        / \
+  A---B  ->  A---B
+   \ /        \ /
+    C          C
   */
   it('adds the face successfully', function () {
     // Use a fresh counter to guarantee same hash
@@ -152,9 +152,23 @@ describe.only('A VectorNetwork adding a new and unrelated face with some overlap
     network.addEdge(vertices[1], vertices[3]);
     network.addEdge(vertices[3], vertices[0]);
 
+    console.log('angle', VectorNetwork.getAngle(
+      vertices[2],
+      vertices[0],
+      vertices[1],
+    ));
+    console.log('angle', VectorNetwork.getAngle(
+      vertices[2],
+      vertices[0],
+      vertices[3],
+    ));
+
     // TODO: Remove `return`
-    // console.log(network.findSmallestFace(vertices[3], vertices[0]));
-    // return;
+    console.log(network.findSmallestFace(vertices[3], vertices[1]));
+    console.log(network.findSmallestFace(vertices[1], vertices[3]));
+    // console.log(network.findSmallestFace(vertices[2], vertices[1]));
+    // console.log(network.findSmallestFace(vertices[1], vertices[2]));
+    return;
 
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(5);
@@ -192,11 +206,11 @@ describe.skip('A VectorNetwork adding an edge outside a closed path', function (
 
 describe.skip('A VectorNetwork with a concave face', function () {
   /*
-  A---B  ->  A---B
-  |   |  ->  |\  |
+  A---B      A---B
+  |   |      |\  |
   |   |  ->  | E |
-  |   |  ->  |/  |
-  D---C  ->  D---C
+  |   |      |/  |
+  D---C      D---C
   */
   it('finds the 2 smallest faces successfully', function () {
     // DEV: This should have shuffled order

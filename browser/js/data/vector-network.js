@@ -89,7 +89,7 @@ VectorNetwork.prototype = {
 
     // Update our faces
     // TODO: Re-enable updateFaces
-    this.updateFaces();
+    // this.updateFaces();
 
     // Return our id
     return newEdge;
@@ -165,6 +165,7 @@ VectorNetwork.prototype = {
 
     while (next) {
       // Start working against our new info, marking our vertex as visited
+      let previousVertex = next.previousVertices[next.previousVertices.length - 1];
       let currentVertex = next.vertex;
       visitedVertexIds[currentVertex.id] = true;
 
@@ -198,13 +199,14 @@ VectorNetwork.prototype = {
 
       // Sort by smallest angle (e.g. concave face inside a square should be matched first)
       if (verticesToAddToStack.length >= 2) {
-        let previousVertex = next.previousVertices[next.previousVertices.length - 1];
+        // DEV: This is reverse sorted as we push onto stack but pop our last item
         verticesToAddToStack.sort(function (vertexA, vertexB) {
           let angleA = VectorNetwork.getAngle(previousVertex, currentVertex, vertexA);
           let angleB = VectorNetwork.getAngle(previousVertex, currentVertex, vertexB);
-          return angleA - angleB;
+          // Use b - a to reverse sort
+          return angleB - angleA;
         });
-        console.log('aaa', verticesToAddToStack);
+        console.log('aaa', previousVertex, currentVertex, verticesToAddToStack);
       }
 
       // Push our new stack items onto the stack
