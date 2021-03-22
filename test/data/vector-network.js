@@ -124,7 +124,7 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
   });
 });
 
-describe('A VectorNetwork adding a new and unrelated face with some overlapy', function () {
+describe.only('A VectorNetwork adding a new and unrelated face with some overlapy', function () {
   /*
     D        D
      \      / \
@@ -152,9 +152,17 @@ describe('A VectorNetwork adding a new and unrelated face with some overlapy', f
     network.addEdge(vertices[1], vertices[3]);
     network.addEdge(vertices[3], vertices[0]);
 
+    // TODO: Remove `return`
+    console.log(network.findSmallestFace(vertices[3], vertices[0]));
+    return;
+
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(5);
     expect(network.faces.length).to.equal(2);
+    console.log([
+      network.faces[0].hash(),
+      network.faces[1].hash()
+    ]);
     expect(network.faces[0].hash()).to.equal('0-1-3');
     expect(network.faces[1].hash()).to.equal('1-2-3');
   });

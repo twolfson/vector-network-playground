@@ -4,7 +4,7 @@ const VectorNetwork = require('../../browser/js/data/vector-network');
 const Vertex = require('../../browser/js/data/vertex');
 
 // DEV: A->B must stay fixed on the x-axis for all these tests to be sane
-describe.only('VectorNetwork#getAngle', function () {
+describe('VectorNetwork#getAngle', function () {
   it('resolves 90 degree angles', function () {
     /*
     C

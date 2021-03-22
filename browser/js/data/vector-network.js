@@ -88,7 +88,8 @@ VectorNetwork.prototype = {
     this.edges.push(newEdge);
 
     // Update our faces
-    this.updateFaces();
+    // TODO: Re-enable updateFaces
+    // this.updateFaces();
 
     // Return our id
     return newEdge;
@@ -169,6 +170,7 @@ VectorNetwork.prototype = {
 
       // If we aren't just starting, and we've completed a cycle, then stop
       if (next.previousVertices.length >= 2 && currentVertex === vertex1) {
+        console.log(next.previousVertices, vertex1, vertex2);
         return next.previousVertices;
       }
 
