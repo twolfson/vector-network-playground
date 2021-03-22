@@ -98,6 +98,8 @@ VectorNetwork.prototype = {
     return newEdge;
   },
   updateFaces: function () {
+    let that = this;
+
     // Resolve all our smallest faces for each edge
     // DEV: In the 2D space, every face has at least 1 edge that doesn't belong to any other faces
     //   The first exception is a tetrahedron which is in 3D space
@@ -143,7 +145,18 @@ VectorNetwork.prototype = {
       deduplicatedFaces.push(face);
     });
 
-    // TODO: Detect added/dropped faces
+    // Swap out any already existing faces
+    // DEV: Currently broken so omitted for now
+    if (false) {
+      deduplicatedFaces = deduplicatedFaces.map(function (face) {
+        for (let i = 0; i < that.faces.length; i += 1) {
+          if (that.faces[i].containsPolygon(face)) {
+            return that.faces[i];
+          }
+        }
+        return face;
+      });
+    }
 
     // Save our faces
     this.faces = deduplicatedFaces;
