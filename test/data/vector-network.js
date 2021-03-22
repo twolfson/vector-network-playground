@@ -1,7 +1,6 @@
 // Load in our dependencies
 const expect = require('chai').expect;
 const VectorNetwork = require('../browser/js/data/vector-network');
-const Vertex = require('../browser/js/data/vertex');
 
 // Define our tests
 describe('A VectorNetwork with an open path', function () {
@@ -122,57 +121,6 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
     expect(network.faces.length).to.equal(2);
     expect(network.faces[0].hash()).to.equal('2-1-0');
     expect(network.faces[1].hash()).to.equal('4-3-1');
-  });
-});
-
-// DEV: A->B must stay fixed on the x-axis for all these tests to be sane
-describe.only('VectorNetwork#getAngle', function () {
-  it('resolves 90 degree angles', function () {
-    /*
-    C
-    |
-    B-A
-    */
-    let angle = VectorNetwork.getAngle(
-      new Vertex(0, 10),
-      new Vertex(0, 0),
-      new Vertex(10, 0),
-    );
-    expect(angle).to.equal(Math.PI / 2);
-  });
-
-  it('resolves 180 degree angles', function () {
-    /*
-    C-B-A
-    */
-    let angle = VectorNetwork.getAngle(
-      new Vertex(10,  0),
-      new Vertex(0,   0),
-      new Vertex(-10, 0),
-    );
-    expect(angle).to.equal(Math.PI);
-  });
-
-  it('resolves 270 degree angles', function () {
-    /*
-    B-A
-    |
-    C
-    */
-    let angle = VectorNetwork.getAngle(
-      new Vertex(10, 0),
-      new Vertex(0, 0),
-      new Vertex(0, -10),
-    );
-    expect(angle).to.equal(3 * Math.PI / 2);
-  });
-
-  it('resolves acute angles', function () {
-
-  });
-
-  it('resolves obtuse angles', function () {
-
   });
 });
 
