@@ -86,7 +86,45 @@ describe('A VectorNetwork adding an existing edge', function () {
   });
 });
 
-describe.only('A VectorNetwork adding a new and unrelated face', function () {
+describe('A VectorNetwork adding a new and unrelated face with no overlapy', function () {
+  /*
+    D---E       D---E
+     \           \ /
+  A---B       A---B
+   \ /    ->   \ /
+    C           C
+  */
+  it('adds the face successfully', function () {
+    // Use a fresh counter to guarantee same hash
+    VectorNetwork.resetCounter();
+
+    let network = new VectorNetwork();
+    let vertices = [
+      network.addVertex(0,   0),
+      network.addVertex(10,  0),
+      network.addVertex(5, -10),
+      network.addVertex(5,  10),
+      network.addVertex(15, 10),
+    ];
+    // Lower triangle
+    network.addEdge(vertices[0], vertices[1]);
+    network.addEdge(vertices[1], vertices[2]);
+    network.addEdge(vertices[2], vertices[0]);
+
+    // Upper triangle
+    network.addEdge(vertices[1], vertices[3]);
+    network.addEdge(vertices[3], vertices[4]);
+    network.addEdge(vertices[4], vertices[1]);
+
+    expect(network.vertices.length).to.equal(5);
+    expect(network.edges.length).to.equal(6);
+    expect(network.faces.length).to.equal(2);
+    expect(network.faces[0].hash()).to.equal('3-2-1');
+    expect(network.faces[1].hash()).to.equal('5-4-2');
+  });
+});
+
+describe.only('A VectorNetwork adding a new and unrelated face with some overlapy', function () {
   /*
     D        D
      \      / \
