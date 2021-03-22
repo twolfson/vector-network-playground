@@ -146,7 +146,7 @@ describe.only('A VectorNetwork adding a new and unrelated face with some overlap
     // Lower triangle
     network.addEdge(vertices[0], vertices[1]);
     network.addEdge(vertices[1], vertices[2]);
-    network.addEdge(vertices[2], vertices[3]);
+    network.addEdge(vertices[2], vertices[0]);
 
     // Upper triangle
     network.addEdge(vertices[1], vertices[3]);

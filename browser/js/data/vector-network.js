@@ -177,15 +177,15 @@ VectorNetwork.prototype = {
           */
           vectorA.set(previousVertex, false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
           vectorB.set(vertexU,        false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
-          let angleA = vectorA.angleTo(vectorB);
+          let angleA = -vectorA.angleTo(vectorB);
           if (angleA < 0) { angleA += Math.PI * 2; }
 
           vectorA.set(previousVertex, false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
           vectorB.set(vertexV,        false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
-          let angleB = vectorA.angleTo(vectorB);
+          let angleB = -vectorA.angleTo(vectorB);
           if (angleB < 0) { angleB += Math.PI * 2; }
 
-          return angleA - angleB;
+          return angleB - angleA;
         });
       }
 
