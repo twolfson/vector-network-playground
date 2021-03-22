@@ -162,20 +162,32 @@ VectorNetwork.prototype = {
         verticesToAddToStack.push(adjacentVertex);
       }
 
-      // TODO: Add back sorting as per notes below
-      // TODO: Omit sorting for now, heuristically we prob just want shortest cycle as-is -- unsure where angle comes is
-      //   Later: It does actually matter... (e.g. concave faces) but not crtical for initial test cases
-      //   If we want to leave a note, prob link to the test case
-      // if (addToStack.length >= 2) {
-      //   let previousVertexId = next.previousVertices[next.previousVertices.length - 1];
-      //   let previousVertexX = that.vertices[(previousVertexId * 2) + 0];
-      //   let previousVertexY = that.vertices[(previousVertexId * 2) + 1];
-      //   addToStack.sort(function (vertexIdA, vertexIdB) {
-      //     let bX = that.vertices[(vertexIdB * 2) + 0];
-      //     let bY = that.vertices[(vertexIdB * 2) + 1];
-      //     return (this_calculateTheta
-      //   });
-      // }
+      // Sort by smallest angle (e.g. concave face inside a square should be matched first)
+      if (verticesToAddToStack.length >= 2) {
+        let previousVertex = next.previousVertices[next.previousVertices.length - 1];
+        let vectorA = new Vec2();
+        let vectorB = new Vec2();
+        verticesToAddToStack.sort(function (vertexU, vertexV) {
+          /*
+          previousVertex
+          |             \
+          |--ANGLE       \ hypotenuse/tangent for angle
+          v    |          \
+          currentVertex----> vertexU
+          */
+          vectorA.set(previousVertex, false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
+          vectorB.set(vertexU,        false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
+          let angleA = vectorA.angleTo(vectorB);
+          if (angleA < 0) { angleA += Math.PI * 2; }
+
+          vectorA.set(previousVertex, false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
+          vectorB.set(vertexV,        false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
+          let angleB = vectorA.angleTo(vectorB);
+          if (angleB < 0) { angleB += Math.PI * 2; }
+
+          return angleA - angleB;
+        });
+      }
 
       // Push our new stack items onto the stack
       let newPreviousVertices = next.previousVertices.slice();
