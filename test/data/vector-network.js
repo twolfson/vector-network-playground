@@ -153,8 +153,8 @@ describe.only('A VectorNetwork adding a new and unrelated face with some overlap
     network.addEdge(vertices[3], vertices[0]);
 
     // TODO: Remove `return`
-    console.log(network.findSmallestFace(vertices[3], vertices[0]));
-    return;
+    // console.log(network.findSmallestFace(vertices[3], vertices[0]));
+    // return;
 
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(5);

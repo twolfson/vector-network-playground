@@ -89,7 +89,7 @@ VectorNetwork.prototype = {
 
     // Update our faces
     // TODO: Re-enable updateFaces
-    // this.updateFaces();
+    this.updateFaces();
 
     // Return our id
     return newEdge;
@@ -170,7 +170,6 @@ VectorNetwork.prototype = {
 
       // If we aren't just starting, and we've completed a cycle, then stop
       if (next.previousVertices.length >= 2 && currentVertex === vertex1) {
-        console.log(next.previousVertices, vertex1, vertex2);
         return next.previousVertices;
       }
 
@@ -203,8 +202,9 @@ VectorNetwork.prototype = {
         verticesToAddToStack.sort(function (vertexA, vertexB) {
           let angleA = VectorNetwork.getAngle(previousVertex, currentVertex, vertexA);
           let angleB = VectorNetwork.getAngle(previousVertex, currentVertex, vertexB);
-          return angleB - angleA;
+          return angleA - angleB;
         });
+        console.log('aaa', verticesToAddToStack);
       }
 
       // Push our new stack items onto the stack
