@@ -16,6 +16,25 @@ VectorNetwork.resetCounter = function () {
   Face.resetCounter();
   Vertex.resetCounter();
 };
+VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
+  /*
+  vertexA
+  |        \
+  |--ANGLE  \ hypotenuse/tangent for angle
+  v    |     \
+  vertexB----> vertexC
+  */
+  // Load our temporary variables
+  let vectorU = VectorNetwork._tmpAngleVectorU = VectorNetwork._tmpAngleVectorU || new Vec2();
+  let vectorV = VectorNetwork._tmpAngleVectorV = VectorNetwork._tmpAngleVectorV || new Vec2();
+
+  // Perform our calculation
+  vectorU.set(vertexA, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
+  vectorV.set(vertexC, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
+  let angle = -vectorU.angleTo(vectorV);
+  if (angle < 0) { angle += Math.PI * 2; }
+  return angle;
+};
 VectorNetwork.prototype = {
   getNearbyVertexId: function (x, y, minimumDistance) {
     // Define our default variables

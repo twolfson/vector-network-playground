@@ -1,6 +1,7 @@
 // Load in our dependencies
 const expect = require('chai').expect;
 const VectorNetwork = require('../browser/js/data/vector-network');
+const Vertex = require('../browser/js/data/vertex');
 
 // Define our tests
 describe('A VectorNetwork with an open path', function () {
@@ -124,7 +125,36 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
   });
 });
 
-describe.only('A VectorNetwork adding a new and unrelated face with some overlapy', function () {
+describe.only('VectorNetwork#getAngle', function () {
+  it('resolves square angles', function () {
+    /*
+    A
+    |
+    B-C
+    */
+    let angle = VectorNetwork.getAngle(
+      new Vertex(10, 0),
+      new Vertex(0, 0),
+      new Vertex(0, 10),
+    );
+    console.log(angle);
+  });
+
+  it('resolves acute angles', function () {
+
+  });
+
+  it('resolves obtuse angles', function () {
+
+  });
+
+  // TODO: Scenario for negatives?
+  it('resolves obtuse angles', function () {
+
+  });
+});
+
+describe('A VectorNetwork adding a new and unrelated face with some overlapy', function () {
   /*
     D        D
      \      / \
