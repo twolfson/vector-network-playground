@@ -119,8 +119,8 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
     expect(network.vertices.length).to.equal(5);
     expect(network.edges.length).to.equal(6);
     expect(network.faces.length).to.equal(2);
-    expect(network.faces[0].hash()).to.equal('3-2-1');
-    expect(network.faces[1].hash()).to.equal('5-4-2');
+    expect(network.faces[0].hash()).to.equal('2-1-0');
+    expect(network.faces[1].hash()).to.equal('4-3-1');
   });
 });
 
@@ -155,7 +155,7 @@ describe.only('A VectorNetwork adding a new and unrelated face with some overlap
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(5);
     expect(network.faces.length).to.equal(2);
-    expect(network.faces[0].hash()).to.equal('1-2-4');
+    expect(network.faces[0].hash()).to.equal('0-1-3');
     expect(network.faces[1].hash()).to.equal('1-2-3');
   });
 });

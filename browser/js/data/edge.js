@@ -1,6 +1,5 @@
 // Define id tracking singletons
-// DEV: Use non-zero starting value so `if` checks are easier
-let EDGE_ID = 1;
+let EDGE_ID = 0;
 
 function Edge(vertexA, vertexB) {
   this.vertexA = vertexA;
@@ -8,7 +7,7 @@ function Edge(vertexA, vertexB) {
   this.id = EDGE_ID++;
 }
 Edge.resetCounter = function () {
-  EDGE_ID = 1;
+  EDGE_ID = 0;
 };
 Edge.prototype = {
   contains: function (vertex) {

@@ -2,8 +2,7 @@
 const Polygon = require('polygon');
 
 // Define id tracking singletons
-// DEV: Use non-zero starting value so `if` checks are easier
-let FACE_ID = 1;
+let FACE_ID = 0;
 
 // Define our constructor and overrides
 // DEV: Using class extension for `instanceof` checks
@@ -14,7 +13,7 @@ class Face extends Polygon {
   }
 
   static resetCounter() {
-    FACE_ID = 1;
+    FACE_ID = 0;
   }
 
   hash() {

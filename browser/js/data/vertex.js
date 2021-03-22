@@ -2,8 +2,7 @@
 const Vec2 = require('vec2');
 
 // Define id tracking singletons
-// DEV: Use non-zero starting value so `if` checks are easier
-let VERTEX_ID = 1;
+let VERTEX_ID = 0;
 
 // Define our constructor and overrides
 // DEV: Using class extension for `instanceof` checks
@@ -14,7 +13,7 @@ class Vertex extends Vec2 {
   }
 
   static resetCounter() {
-    VERTEX_ID = 1;
+    VERTEX_ID = 0;
   }
 
   toString() {
