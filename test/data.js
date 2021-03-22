@@ -137,7 +137,7 @@ describe.only('VectorNetwork#getAngle', function () {
       new Vertex(0, 0),
       new Vertex(0, 10),
     );
-    console.log(angle);
+    expect(angle).to.equal(Math.PI / 2);
   });
 
   it('resolves acute angles', function () {
@@ -146,6 +146,33 @@ describe.only('VectorNetwork#getAngle', function () {
 
   it('resolves obtuse angles', function () {
 
+  });
+
+  it('resolves quadrant 2 square angles', function () {
+    /*
+    A-B
+      |
+      C
+    */
+    let angle = VectorNetwork.getAngle(
+      new Vertex(10, 0),
+      new Vertex(0, 0),
+      new Vertex(0, -10),
+    );
+    expect(angle).to.equal(3 * Math.PI / 2);
+  });
+  it('resolves quadrant 4 square angles', function () {
+    /*
+    B-C
+    |
+    A
+    */
+    let angle = VectorNetwork.getAngle(
+      new Vertex(0, -10),
+      new Vertex(0, 0),
+      new Vertex(10, 0),
+    );
+    expect(angle).to.equal(Math.PI / 2);
   });
 
   // TODO: Scenario for negatives?
