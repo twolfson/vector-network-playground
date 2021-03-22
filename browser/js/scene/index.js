@@ -31,9 +31,21 @@ Scene.prototype = {
 
     // Draw our vector networks
     data.vectorNetworks.forEach(function (vectorNetwork) {
-      // Draw our edges first
+      // Draw our faces first
+      let faces = vectorNetwork.faces;
       let edges = vectorNetwork.edges;
       let vertices = vectorNetwork.vertices;
+      faces.forEach(function (face) {
+        that.context.beginPath();
+        that.context.moveTo(face.vertices[0].x, face.vertices[0].y);
+        for (let i = 1; i < face.vertices.length; i += 1) {
+          that.context.lineTo(face.vertices[i].x, face.vertices[i].y);
+        }
+        that.context.fillStyle = face.fillStyle;
+        that.context.fill();
+      });
+
+      // Then draw our edges over our faces
       edges.forEach(function (edge) {
         that.context.beginPath();
         that.context.moveTo(edge.vertexA.x, edge.vertexA.y);
