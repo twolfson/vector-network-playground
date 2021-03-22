@@ -18,12 +18,26 @@ VectorNetwork.resetCounter = function () {
 };
 VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
   /*
+  Visual goal: B is center-point and we want to calculate angle between A and C
   vertexA
   ^        \
   |--ANGLE  \ hypotenuse/tangent for angle
   |    |     \
   vertexB----> vertexC
   */
+
+  // To convert vertices to vectors, use the following:
+  // vertexA = vectorA from origin
+  // 0,0 ------> vertexA
+  //       ^ vectorA
+
+  // 0,0 ----------------> vertexA
+  // 0,0 -> vertexB
+
+  //          vertexB ---> vertexA =
+  // 0,0 ----------------> vertexA
+  // vertexB <- 0,0 (backwards because minus)
+
   // Load our temporary variables
   let vectorU = VectorNetwork._tmpAngleVectorU = VectorNetwork._tmpAngleVectorU || new Vec2();
   let vectorV = VectorNetwork._tmpAngleVectorV = VectorNetwork._tmpAngleVectorV || new Vec2();
