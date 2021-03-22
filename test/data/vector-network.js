@@ -1,6 +1,6 @@
 // Load in our dependencies
 const expect = require('chai').expect;
-const VectorNetwork = require('../browser/js/data/vector-network');
+const VectorNetwork = require('../../browser/js/data/vector-network');
 
 // Define our tests
 describe('A VectorNetwork with an open path', function () {

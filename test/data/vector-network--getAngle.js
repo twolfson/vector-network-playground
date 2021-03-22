@@ -1,7 +1,7 @@
 // Load in our dependencies
 const expect = require('chai').expect;
-const VectorNetwork = require('../browser/js/data/vector-network');
-const Vertex = require('../browser/js/data/vertex');
+const VectorNetwork = require('../../browser/js/data/vector-network');
+const Vertex = require('../../browser/js/data/vertex');
 
 // DEV: A->B must stay fixed on the x-axis for all these tests to be sane
 describe.only('VectorNetwork#getAngle', function () {
@@ -31,7 +31,7 @@ describe.only('VectorNetwork#getAngle', function () {
     expect(angle).to.equal(Math.PI);
   });
 
-  it('resolves 270 degree angles', function () {
+  it('resolves internal angle for 270 degree angles', function () {
     /*
     B-A
     |
@@ -42,7 +42,7 @@ describe.only('VectorNetwork#getAngle', function () {
       new Vertex(0, 0),
       new Vertex(0, -10),
     );
-    expect(angle).to.equal(3 * Math.PI / 2);
+    expect(angle).to.equal(Math.PI / 2);
   });
 
   it('resolves acute angles', function () {

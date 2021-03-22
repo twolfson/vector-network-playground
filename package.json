@@ -23,7 +23,7 @@
     "lint": "eslint browser/ --max-warnings 0 --max-warnings 0",
     "precheck": "eslint browser/",
     "start": "parcel browser/index.pug --port 5000",
-    "test": "npm run precheck && NODE_ENV=test mocha 1>&2 && npm run lint"
+    "test": "npm run precheck && NODE_ENV=test mocha --recursive test/ && npm run lint"
   },
   "author": "Todd Wolfson <todd@twolfson.com> (http://twolfson.com/)",
   "license": "Unlicense",
