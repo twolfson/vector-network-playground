@@ -94,12 +94,22 @@ describe.only('VectorNetwork#getAngle', function () {
     let angle = VectorNetwork.getAngle(
       new Vertex(1, 0),
       new Vertex(0, 0),
-      new Vertex(0, Math.sqrt(2)),
+      new Vertex(Math.sqrt(2), Math.sqrt(2)),
     );
     expect(angle).to.equal(Math.PI / 4);
   });
 
   it('resolves obtuse angles', function () {
-
+    /*
+    C
+     \
+      B-A
+    */
+    let angle = VectorNetwork.getAngle(
+      new Vertex(1, 0),
+      new Vertex(0, 0),
+      new Vertex(-Math.sqrt(2), Math.sqrt(2)),
+    );
+    expect(angle).to.equal(3 * Math.PI / 4);
   });
 });
