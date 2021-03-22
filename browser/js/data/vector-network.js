@@ -5,6 +5,9 @@ const Face = require('./face');
 const Vec2 = require('vec2');
 const Vertex = require('./vertex');
 
+const IS_CLOCKWISE = true;
+const IS_COUNTERCLOCKWISE = true; // eslint-disable-line
+
 // Define our constructor
 function VectorNetwork() {
   this.vertices = [];
@@ -117,7 +120,7 @@ VectorNetwork.prototype = {
     let ccwFaces = [];
     allSmallestFaces.forEach(function (vertices) {
       let face = new Face(vertices);
-      if (face.winding() === true) {
+      if (face.winding() === IS_CLOCKWISE) {
         ccwFaces.push(face);
       }
     });
