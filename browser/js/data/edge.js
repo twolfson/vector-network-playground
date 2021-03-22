@@ -7,6 +7,9 @@ function Edge(vertexA, vertexB) {
   this.vertexB = vertexB;
   this.id = EDGE_ID++;
 }
+Edge.resetCounter = function () {
+  EDGE_ID = 1;
+};
 Edge.prototype = {
   contains: function (vertex) {
     return this.vertexA === vertex || this.vertexB === vertex;

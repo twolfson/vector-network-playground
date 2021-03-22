@@ -6,10 +6,15 @@ const Vec2 = require('vec2');
 let VERTEX_ID = 1;
 
 // Define our constructor and overrides
+// DEV: Using class extension for `instanceof` checks
 class Vertex extends Vec2 {
   constructor(x, y) {
     super(x, y);
     this.id = VERTEX_ID++;
+  }
+
+  static resetCounter() {
+    VERTEX_ID = 1;
   }
 
   toString() {

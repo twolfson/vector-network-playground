@@ -86,7 +86,7 @@ describe('A VectorNetwork adding an existing edge', function () {
   });
 });
 
-describe('A VectorNetwork adding a new and unrelated face', function () {
+describe.only('A VectorNetwork adding a new and unrelated face', function () {
   /*
     D        D
      \      / \
@@ -95,6 +95,9 @@ describe('A VectorNetwork adding a new and unrelated face', function () {
     C        C
   */
   it('adds the face successfully', function () {
+    // Use a fresh counter to guarantee same hash
+    VectorNetwork.resetCounter();
+
     let network = new VectorNetwork();
     let vertices = [
       network.addVertex(0,   0),
@@ -114,7 +117,8 @@ describe('A VectorNetwork adding a new and unrelated face', function () {
     expect(network.vertices.length).to.equal(4);
     expect(network.edges.length).to.equal(5);
     expect(network.faces.length).to.equal(2);
-    console.log(network.faces[0].hash());
+    expect(network.faces[0].hash()).to.equal('1-2-4');
+    expect(network.faces[1].hash()).to.equal('1-2-3');
   });
 });
 

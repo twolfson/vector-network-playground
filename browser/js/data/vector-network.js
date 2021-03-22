@@ -11,6 +11,11 @@ function VectorNetwork() {
   this.edges = [];
   this.faces = [];
 }
+VectorNetwork.resetCounter = function () {
+  Edge.resetCounter();
+  Face.resetCounter();
+  Vertex.resetCounter();
+};
 VectorNetwork.prototype = {
   getNearbyVertexId: function (x, y, minimumDistance) {
     // Define our default variables

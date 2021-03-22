@@ -6,10 +6,15 @@ const Polygon = require('polygon');
 let FACE_ID = 1;
 
 // Define our constructor and overrides
+// DEV: Using class extension for `instanceof` checks
 class Face extends Polygon {
   constructor(vertices) {
     super(vertices);
     this.id = FACE_ID++;
+  }
+
+  static resetCounter() {
+    FACE_ID = 1;
   }
 
   hash() {
