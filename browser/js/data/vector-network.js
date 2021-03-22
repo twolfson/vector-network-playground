@@ -45,6 +45,7 @@ VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
   // Perform our calculation
   vectorU.set(vertexA, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
   vectorV.set(vertexC, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
+  // DEV: blueprint3d uses negative atan2 (vs positive here), so they like counter-clockwise whereas this is clockwise
   let angle = vectorU.angleTo(vectorV);
   if (angle < 0) { angle += Math.PI * 2; }
   return angle;
