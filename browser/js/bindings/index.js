@@ -49,21 +49,26 @@ Bindings.prototype = {
     // Resolve our mouse
     let mouse = this.getMousePosition(evt);
 
-    // If we're close to an existing vertex, then terminate our path
-    // TODO: Find vertex + network instead of depending on last network
-    let nearbyVertex = this.data.lastVectorNetwork
-      ? this.data.lastVectorNetwork.getNearbyVertex(mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE)
-      : null;
+    // If we're close to an existing vertex
+    // TODO: Find resolve network as part of `getNearby` as well
+    let nearbyVectorNetwork = this.data.vectorNetworks[0];
+    let nearbyVertex = nearbyVectorNetwork.getNearbyVertex(mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
     if (nearbyVertex !== null) {
-      // If this is not the last vertex (so drawing a new edge), then draw our edge
-      if (nearbyVertex !== this.data.lastVertex) {
-        let vectorNetwork = this.data.lastVectorNetwork;
-        vectorNetwork.addEdge(this.data.lastVertex, nearbyVertex);
-      }
+      // If we're on an existing path, then terminate it
+      if (this.data.lastVertex) {
+        // If this is not the last vertex (so drawing a new edge), then draw our edge
+        if (nearbyVertex !== this.data.lastVertex) {
+          nearbyVectorNetwork.addEdge(this.data.lastVertex, nearbyVertex);
+        }
 
-      // Terminate our path
-      this.data.lastVertex = null;
-      this.data.lastVectorNetwork = null;
+        // Terminate our path
+        this.data.lastVertex = null;
+        this.data.lastVectorNetwork = null;
+      // Otherwise, start a new one
+      } else {
+        this.data.lastVertex = nearbyVertex;
+        this.data.lastVectorNetwork = nearbyVectorNetwork;
+      }
 
       this._queueRender();
       return;
@@ -85,16 +90,14 @@ Bindings.prototype = {
     let mouse = this.getMousePosition(evt);
 
     // If we're on an existing path, then snap to any nearby vertices
-    // TODO: Find vertex + network instead of depending on last network
+    // TODO: Find resolve network as part of `getNearby` as well
     this.data.snappedVertex = null;
-    if (this.data.lastVectorNetwork !== null) {
-      let nearbyVertex = this.data.lastVectorNetwork.getNearbyVertex(
-        mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
-      if (nearbyVertex !== null) {
-        mouse.x = nearbyVertex.x;
-        mouse.y = nearbyVertex.y;
-        this.data.snappedVertex = nearbyVertex;
-      }
+    let nearbyVertex = this.data.vectorNetworks[0].getNearbyVertex(
+      mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
+    if (nearbyVertex !== null) {
+      mouse.x = nearbyVertex.x;
+      mouse.y = nearbyVertex.y;
+      this.data.snappedVertex = nearbyVertex;
     }
 
     this.data.cursor.x = mouse.x;
