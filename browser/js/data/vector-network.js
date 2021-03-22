@@ -88,8 +88,7 @@ VectorNetwork.prototype = {
     this.edges.push(newEdge);
 
     // Update our faces
-    // TODO: Re-enable updateFaces
-    // this.updateFaces();
+    this.updateFaces();
 
     // Return our id
     return newEdge;
@@ -102,22 +101,34 @@ VectorNetwork.prototype = {
     //   Back on track: By finding all faces for each edge, we get some duplicates but we also get all faces
     let allSmallestFaces = [];
     for (let i = 0; i < this.edges.length; i += 1) {
-      let smallestFace = this.findSmallestFace(this.edges[i].vertexA, this.edges[i].vertexB);
-      if (smallestFace) {
-        allSmallestFaces.push(smallestFace);
-      }
+      // DEV: Search in both orientations as we want to find clockwise only faces
+      //   but we don't know which way works best for our edge
+      //   Counter-clockwise faces will get angles incorrect for comparison so they take longer paths
+      let smallestFace;
+      smallestFace = this.findSmallestFace(this.edges[i].vertexA, this.edges[i].vertexB);
+      if (smallestFace) { allSmallestFaces.push(smallestFace); }
+      smallestFace = this.findSmallestFace(this.edges[i].vertexB, this.edges[i].vertexA);
+      if (smallestFace) { allSmallestFaces.push(smallestFace); }
     }
+
+    // Remove any counter-clockwise faces
+    // DEV: Counter-clockwise faces will get angles incorrect for comparison so they take longer paths
+    let ccwFaces = [];
+    allSmallestFaces.forEach(function (vertices) {
+      let face = new Face(vertices);
+      if (face.winding() === true) {
+        ccwFaces.push(face);
+      }
+    });
 
     // Deduplicate our faces
     // DEV: We could do this in `O(n)` by doing cycles instead of `nlogn` sorting but meh, faces aren't *that* big
     let deduplicatedFaces = [];
     let seenFaces = {};
-    allSmallestFaces.forEach(function (face) {
+    ccwFaces.forEach(function (face) {
       // If our face has been seen before, skip it
       // [2, 0, 1] -> [0, 1, 2] -> 0-1-2
-      // DEV: Another downside of this is we combine clockwise and counter-clockwise faces
-      //   so instead of filtering out clockwise, we need to reverse them later on
-      let faceHash = face.slice().map(function (vertex) { return vertex.id; }).sort().join('-');
+      let faceHash = face.points.map(function (vertex) { return vertex.id; }).sort().join('-');
       if (seenFaces[faceHash] === true) {
         return;
       }
@@ -127,16 +138,10 @@ VectorNetwork.prototype = {
       deduplicatedFaces.push(face);
     });
 
-    //  Add cycle reversing for clockwise faces
-    let normalizedFaces = deduplicatedFaces.map(function (vertices) {
-      let face = new Face(vertices);
-      return face.rewind(false); // false means make all faces counter-clockwise
-    });
-
     // TODO: Detect added/dropped faces
 
     // Save our faces
-    this.faces = normalizedFaces;
+    this.faces = deduplicatedFaces;
   },
   findSmallestFace: function (vertex1, vertex2) {
     // Correction: This is a DFS due to using a stack, instead of a BFS which would be a queue
@@ -206,7 +211,6 @@ VectorNetwork.prototype = {
           // Use b - a to reverse sort
           return angleB - angleA;
         });
-        console.log('aaa', previousVertex, currentVertex, verticesToAddToStack);
       }
 
       // Push our new stack items onto the stack
