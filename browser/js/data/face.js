@@ -6,20 +6,20 @@ const Polygon = require('polygon');
 let FACE_ID = 1;
 
 // Define our constructor and overrides
-function Face(vertices) {
-  let retObj = new Polygon(vertices);
-  Object.defineProperties(retObj, Face.prototype);
-  retObj.id = FACE_ID++;
-  return retObj;
-}
-Face.prototype = {
-  hash: function () {
+class Face extends Polygon {
+  constructor(vertices) {
+    super(vertices);
+    this.id = FACE_ID++;
+  }
+
+  hash() {
     return this.points.map(function (vertex) {
       return vertex.id;
     }).join('-');
-  },
-  toString: function () {
+  }
+
+  toString() {
     return `<Face ${this.id}>`;
   }
-};
+}
 module.exports = Face;

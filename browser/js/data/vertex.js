@@ -6,16 +6,14 @@ const Vec2 = require('vec2');
 let VERTEX_ID = 1;
 
 // Define our constructor and overrides
-function Vertex(x, y) {
-  let retObj = new Vec2(x, y);
-  Object.defineProperties(retObj, Vertex.prototype);
-  retObj.id = VERTEX_ID++;
-  return retObj;
-}
-Vertex.prototype = {
-  toString: function () {
+class Vertex extends Vec2 {
+  constructor(x, y) {
+    super(x, y);
+    this.id = VERTEX_ID++;
+  }
+
+  toString() {
     return `<Vertex ${this.id}>`;
   }
-};
-
+}
 module.exports = Vertex;

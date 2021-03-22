@@ -86,7 +86,7 @@ describe('A VectorNetwork adding an existing edge', function () {
   });
 });
 
-describe.only('A VectorNetwork adding a new and unrelated face', function () {
+describe('A VectorNetwork adding a new and unrelated face', function () {
   /*
     D        D
      \      / \
