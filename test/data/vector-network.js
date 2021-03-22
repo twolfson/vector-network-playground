@@ -153,21 +153,21 @@ describe.only('A VectorNetwork adding a new and unrelated face with some overlap
     network.addEdge(vertices[3], vertices[0]);
 
     console.log('angle', VectorNetwork.getAngle(
-      vertices[2],
+      vertices[3],
       vertices[0],
       vertices[1],
     ));
     console.log('angle', VectorNetwork.getAngle(
-      vertices[2],
-      vertices[0],
       vertices[3],
+      vertices[0],
+      vertices[2],
     ));
 
     // TODO: Remove `return`
     console.log(network.findSmallestFace(vertices[3], vertices[1]));
     console.log(network.findSmallestFace(vertices[1], vertices[3]));
-    // console.log(network.findSmallestFace(vertices[2], vertices[1]));
-    // console.log(network.findSmallestFace(vertices[1], vertices[2]));
+    console.log(network.findSmallestFace(vertices[2], vertices[1]));
+    console.log(network.findSmallestFace(vertices[1], vertices[2]));
     return;
 
     expect(network.vertices.length).to.equal(4);
