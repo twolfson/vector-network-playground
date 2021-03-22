@@ -1,4 +1,6 @@
 # vector-network-playground changelog
+1.4.1 - Fixed scene and bindings to handle new data storage and added fill styles for faces
+
 1.4.0 - Moved from typed arrays to classes for data store and properly finished face finding
 
 1.3.0 - Completed face finding with some limitations, incomplete with saving, switching data structures
