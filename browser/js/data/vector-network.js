@@ -117,11 +117,11 @@ VectorNetwork.prototype = {
 
     // Remove any counter-clockwise faces
     // DEV: Counter-clockwise faces will get angles incorrect for comparison so they take longer paths
-    let ccwFaces = [];
+    let orientedFaces = [];
     allSmallestFaces.forEach(function (vertices) {
       let face = new Face(vertices);
       if (face.winding() === IS_CLOCKWISE) {
-        ccwFaces.push(face);
+        orientedFaces.push(face);
       }
     });
 
@@ -129,9 +129,10 @@ VectorNetwork.prototype = {
     // DEV: We could do this in `O(n)` by doing cycles instead of `nlogn` sorting but meh, faces aren't *that* big
     let deduplicatedFaces = [];
     let seenFaces = {};
-    ccwFaces.forEach(function (face) {
+    orientedFaces.forEach(function (face) {
       // If our face has been seen before, skip it
       // [2, 0, 1] -> [0, 1, 2] -> 0-1-2
+      // DEV: This would lead to mixing of clockwise and counter-clockwise faces so we filter those first
       let faceHash = face.points.map(function (vertex) { return vertex.id; }).sort().join('-');
       if (seenFaces[faceHash] === true) {
         return;
