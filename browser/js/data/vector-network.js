@@ -162,22 +162,10 @@ VectorNetwork.prototype = {
     this.faces = deduplicatedFaces;
   },
   findSmallestFace: function (vertex1, vertex2) {
-    // Correction: This is a DFS due to using a stack, instead of a BFS which would be a queue
-
-    // TODO: Clean up code comment
-    // Trying to glean a decent strategy from this: https://github.com/furnishup/blueprint3d/blob/cac8b62c1a3839e929334bdc125bf8a74866be9e/src/model/floorplan.ts#L369-L494
-    // 1. Find all possible smallest faces - smallest by performing BFS then prioritizing smallest angles
-    // 2. Remove duplicate faces with different starting edge (cycles room, hashes into `id1-id2-id3-...`)
-    // 3. Remove clockwise faces (since all faces will have both clockwise and counter-clockwise variants)
-    // 4. Disco
-    // TODO: How do we identify when we subdivide a face so we can persist the fills?
-    //   They don't do that in blueprint3d
-    //   Something about new face with all edges except new edge being contained by an existing face?
-    // TODO: Move to typed data, though this doesn't affect draw performance so questionable
-    //   Can also prob rationalize that we don't need typed data since we aren't dealing with 100k data points
-    //   These are added by humans instead so at most 100 ._. (lots of clicking)
-
     // Heavily based on https://github.com/furnishup/blueprint3d/blob/cac8b62c1a3839e929334bdc125bf8a74866be9e/src/model/floorplan.ts#L369-L494
+    // Find smallest face by leaning on angles and DFS
+
+    // Define our search starting point
     let stack = []; // Stack of `next` items
     let next = {
       vertex: vertex2,
