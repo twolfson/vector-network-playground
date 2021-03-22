@@ -19,9 +19,9 @@ VectorNetwork.resetCounter = function () {
 VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
   /*
   vertexA
-  |        \
+  ^        \
   |--ANGLE  \ hypotenuse/tangent for angle
-  v    |     \
+  |    |     \
   vertexB----> vertexC
   */
   // Load our temporary variables
@@ -32,7 +32,9 @@ VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
   vectorU.set(vertexA, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
   vectorV.set(vertexC, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
   let angle = -vectorU.angleTo(vectorV);
+  console.log('aaa', angle);
   if (angle < 0) { angle += Math.PI * 2; }
+  console.log('bbb', angle);
   return angle;
 };
 VectorNetwork.prototype = {
@@ -184,26 +186,9 @@ VectorNetwork.prototype = {
       // Sort by smallest angle (e.g. concave face inside a square should be matched first)
       if (verticesToAddToStack.length >= 2) {
         let previousVertex = next.previousVertices[next.previousVertices.length - 1];
-        let vectorA = new Vec2();
-        let vectorB = new Vec2();
-        verticesToAddToStack.sort(function (vertexU, vertexV) {
-          /*
-          previousVertex
-          |             \
-          |--ANGLE       \ hypotenuse/tangent for angle
-          v    |          \
-          currentVertex----> vertexU
-          */
-          vectorA.set(previousVertex, false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
-          vectorB.set(vertexU,        false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
-          let angleA = -vectorA.angleTo(vectorB);
-          if (angleA < 0) { angleA += Math.PI * 2; }
-
-          vectorA.set(previousVertex, false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
-          vectorB.set(vertexV,        false /* notify */); vectorA.subtract(currentVertex, false /* returnNew */);
-          let angleB = -vectorA.angleTo(vectorB);
-          if (angleB < 0) { angleB += Math.PI * 2; }
-
+        verticesToAddToStack.sort(function (vertexA, vertexB) {
+          let angleA = VectorNetwork.getAngle(previousVertex, currentVertex, vertexA);
+          let angleB = VectorNetwork.getAngle(previousVertex, currentVertex, vertexB);
           return angleB - angleA;
         });
       }

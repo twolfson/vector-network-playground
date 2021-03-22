@@ -127,7 +127,7 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
 
 // DEV: A->B must stay fixed on the x-axis for all these tests to be sane
 describe.only('VectorNetwork#getAngle', function () {
-  it('resolves square angles', function () {
+  it('resolves 90 degree angles', function () {
     /*
     C
     |
@@ -146,14 +146,14 @@ describe.only('VectorNetwork#getAngle', function () {
     C-B-A
     */
     let angle = VectorNetwork.getAngle(
-      new Vertex(10, 0),
-      new Vertex(0, 0),
-      new Vertex(0, -10),
+      new Vertex(10,  0),
+      new Vertex(0,   0),
+      new Vertex(-10, 0),
     );
     expect(angle).to.equal(Math.PI);
   });
 
-  it.skip('resolves 270 degree angles', function () {
+  it('resolves 270 degree angles', function () {
     /*
     B-A
     |
