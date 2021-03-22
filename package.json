@@ -13,6 +13,7 @@
     "foundry": "~4.4.2",
     "foundry-release-git": "~2.0.3",
     "foundry-release-npm": "~2.0.2",
+    "gh-pages": "~3.1.0",
     "mocha": "~8.3.2",
     "parcel": "1.12.3",
     "pug": "~3.0.2",
@@ -22,6 +23,7 @@
     "build": "rm -r dist && NODE_ENV=production parcel build browser/index.pug --public-url \".\" --no-source-maps",
     "lint": "eslint browser/ --max-warnings 0 --max-warnings 0",
     "precheck": "eslint browser/",
+    "publish-demo": "npm run build && git diff --exit-code && gh-pages --dist dist --branch gh-pages",
     "start": "parcel browser/index.pug --port 5000",
     "test": "npm run precheck && NODE_ENV=test mocha --recursive test/ && npm run lint"
   },
@@ -30,6 +32,11 @@
   "private": true,
   "foundry": {
     "releaseCommands": [
+      {
+        "_comment": "We could build demo via `updateFiles` hook and then publish on `publish` but this catches errors earlier",
+        "type": "customCommand",
+        "updateFiles": "npm run publish-demo"
+      },
       "foundry-release-git",
       "foundry-release-npm"
     ]
