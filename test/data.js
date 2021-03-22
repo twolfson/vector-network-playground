@@ -125,34 +125,39 @@ describe('A VectorNetwork adding a new and unrelated face with no overlapy', fun
   });
 });
 
+// DEV: A->B must stay fixed on the x-axis for all these tests to be sane
 describe.only('VectorNetwork#getAngle', function () {
   it('resolves square angles', function () {
     /*
-    A
+    C
     |
-    B-C
+    B-A
     */
     let angle = VectorNetwork.getAngle(
-      new Vertex(10, 0),
-      new Vertex(0, 0),
       new Vertex(0, 10),
+      new Vertex(0, 0),
+      new Vertex(10, 0),
     );
     expect(angle).to.equal(Math.PI / 2);
   });
 
-  it('resolves acute angles', function () {
-
-  });
-
-  it('resolves obtuse angles', function () {
-
-  });
-
-  it('resolves quadrant 2 square angles', function () {
+  it('resolves 180 degree angles', function () {
     /*
-    A-B
-      |
-      C
+    C-B-A
+    */
+    let angle = VectorNetwork.getAngle(
+      new Vertex(10, 0),
+      new Vertex(0, 0),
+      new Vertex(0, -10),
+    );
+    expect(angle).to.equal(Math.PI);
+  });
+
+  it.skip('resolves 270 degree angles', function () {
+    /*
+    B-A
+    |
+    C
     */
     let angle = VectorNetwork.getAngle(
       new Vertex(10, 0),
@@ -161,21 +166,11 @@ describe.only('VectorNetwork#getAngle', function () {
     );
     expect(angle).to.equal(3 * Math.PI / 2);
   });
-  it('resolves quadrant 4 square angles', function () {
-    /*
-    B-C
-    |
-    A
-    */
-    let angle = VectorNetwork.getAngle(
-      new Vertex(0, -10),
-      new Vertex(0, 0),
-      new Vertex(10, 0),
-    );
-    expect(angle).to.equal(Math.PI / 2);
+
+  it('resolves acute angles', function () {
+
   });
 
-  // TODO: Scenario for negatives?
   it('resolves obtuse angles', function () {
 
   });
