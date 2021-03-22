@@ -54,7 +54,7 @@ VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
   return angle;
 };
 VectorNetwork.prototype = {
-  getNearbyVertexId: function (x, y, minimumDistance) {
+  getNearbyVertex: function (x, y, minimumDistance) {
     // Define our default variables
     let closestVertex = null;
     let closestVertexDistance = Infinity;
@@ -94,7 +94,7 @@ VectorNetwork.prototype = {
     // Update our faces
     this.updateFaces();
 
-    // Return our id
+    // Return our edge
     return newEdge;
   },
   updateFaces: function () {

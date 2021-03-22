@@ -49,33 +49,34 @@ Bindings.prototype = {
     // Resolve our mouse
     let mouse = this.getMousePosition(evt);
 
-    // If we're close to an existing vertex, then close our path
+    // If we're close to an existing vertex, then terminate our path
     // TODO: Find vertex + network instead of depending on last network
-    if (this.data.lastVectorNetwork !== null) {
-      let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
-        mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
-      if (nearbyVertexId !== null) {
-        if (nearbyVertexId !== this.data.lastVertexId) {
-          let vectorNetwork = this.data.lastVectorNetwork;
-          vectorNetwork.pushVertexIdToPath(this.data.lastPathId, nearbyVertexId);
-        }
-
-        this.data.lastPathId = null;
-        this.data.lastVertexId = null;
-        this.data.lastVectorNetwork = null;
-
-        this._queueRender();
-        return;
+    let nearbyVertex = this.data.lastVectorNetwork
+      ? this.data.lastVectorNetwork.getNearbyVertex(mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE)
+      : null;
+    if (nearbyVertex !== null) {
+      // If this is not the last vertex (so drawing a new edge), then draw our edge
+      if (nearbyVertex !== this.data.lastVertex) {
+        let vectorNetwork = this.data.lastVectorNetwork;
+        vectorNetwork.addEdge(this.data.lastVertex, nearbyVertex);
       }
+
+      // Terminate our path
+      this.data.lastVertex = null;
+      this.data.lastVectorNetwork = null;
+
+      this._queueRender();
+      return;
     }
 
-    // Otherwise, start one/continue to add to it
+    // Otherwise, start/continue drawing a path
     let vectorNetwork = this.data.vectorNetworks[0];
-    let pathId = this.data.lastPathId !== null ? this.data.lastPathId : vectorNetwork.addPath();
-    let vertexId = vectorNetwork.pushVertexToPath(pathId, mouse.x, mouse.y);
+    let vertex = vectorNetwork.addVertex(mouse.x, mouse.y);
+    if (this.data.lastVertex) {
+      vectorNetwork.addEdge(this.data.lastVertex, vertex);
+    }
 
-    this.data.lastPathId = pathId;
-    this.data.lastVertexId = vertexId;
+    this.data.lastVertex = vertex;
     this.data.lastVectorNetwork = vectorNetwork;
 
     this._queueRender();
@@ -85,14 +86,14 @@ Bindings.prototype = {
 
     // If we're on an existing path, then snap to any nearby vertices
     // TODO: Find vertex + network instead of depending on last network
-    this.data.snappedVertexId = null;
+    this.data.snappedVertex = null;
     if (this.data.lastVectorNetwork !== null) {
-      let nearbyVertexId = this.data.lastVectorNetwork.getNearbyVertexId(
+      let nearbyVertex = this.data.lastVectorNetwork.getNearbyVertex(
         mouse.x, mouse.y, NEARBY_VERTEX_DISTANCE);
-      if (nearbyVertexId !== null) {
-        mouse.x = this.data.lastVectorNetwork.vertices[(nearbyVertexId * 2) + 0];
-        mouse.y = this.data.lastVectorNetwork.vertices[(nearbyVertexId * 2) + 1];
-        this.data.snappedVertexId = nearbyVertexId;
+      if (nearbyVertex !== null) {
+        mouse.x = nearbyVertex.x;
+        mouse.y = nearbyVertex.y;
+        this.data.snappedVertex = nearbyVertex;
       }
     }
 

@@ -31,51 +31,38 @@ Scene.prototype = {
 
     // Draw our vector networks
     data.vectorNetworks.forEach(function (vectorNetwork) {
-      // Draw our paths first
-      let paths = vectorNetwork.paths;
+      // Draw our edges first
+      let edges = vectorNetwork.edges;
       let vertices = vectorNetwork.vertices;
-      paths.forEach(function (path) {
-        // If our path is too short, stop early
-        if (path.vertexIdCount < 2) {
-          return;
-        }
-
-        // Otherwise, draw our path
+      edges.forEach(function (edge) {
         that.context.beginPath();
-        let firstVertexId = path.vertexIds[0];
-        that.context.moveTo(vertices[(firstVertexId * 2) + 0], vertices[(firstVertexId * 2) + 1]);
-        for (let i = 1; i < path.vertexIdCount; i += 1) {
-          let vertexId = path.vertexIds[i];
-          that.context.lineTo(vertices[(vertexId * 2) + 0], vertices[(vertexId * 2) + 1]);
-        }
+        that.context.moveTo(edge.vertexA.x, edge.vertexA.y);
+        that.context.lineTo(edge.vertexB.x, edge.vertexB.y);
         that.context.strokeStyle = '#000000';
         that.context.stroke();
       });
 
-      // Then draw our vertices over our paths
-      for (let i = 0; i < vectorNetwork.verticesCount; i += 1) {
-        that.context.fillStyle = i === data.snappedVertexId ? '#FF00FF' : '#000000';
+      // Then draw our vertices over our edges
+      vertices.forEach(function (vertex) {
+        that.context.fillStyle = vertex === data.snappedVertex ? '#FF00FF' : '#000000';
         that.context.fillRect(
-          vertices[(i * 2) + 0] - (VERTEX_SIZE / 2),
-          vertices[(i * 2) + 1] - (VERTEX_SIZE / 2),
+          vertex.x - (VERTEX_SIZE / 2),
+          vertex.y - (VERTEX_SIZE / 2),
           VERTEX_SIZE, VERTEX_SIZE);
-      }
+      });
     });
 
     // If we have a last vertex, draw an edge from it
-    if (data.lastVertexId !== null) {
-      let lastVertexX = data.lastVectorNetwork.vertices[(data.lastVertexId * 2) + 0];
-      let lastVertexY = data.lastVectorNetwork.vertices[(data.lastVertexId * 2) + 1];
-
+    if (data.lastVertex !== null) {
       that.context.beginPath();
-      that.context.moveTo(lastVertexX, lastVertexY);
+      that.context.moveTo(data.lastVertex.x, data.lastVertex.y);
       this.context.lineTo(data.cursor.x, data.cursor.y);
       that.context.strokeStyle = '#000000';
       this.context.stroke();
     }
 
     // Draw our cursor on top of everything
-    if (data.snappedVertexId === null) {
+    if (data.snappedVertex === null) {
       that.context.fillStyle = '#000000';
       this.context.fillRect(
         data.cursor.x - (CURSOR_DOT_SIZE / 2),

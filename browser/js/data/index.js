@@ -6,9 +6,8 @@ function Data() {
   this.vectorNetworks = [new VectorNetwork()];
 
   this.lastVectorNetwork = null;
-  this.lastVertexId = null;
-  this.lastPathId = null;
-  this.snappedVertexId = null;
+  this.lastVertex = null;
+  this.snappedVertex = null;
 
   this.cursor = {x: 0, y: 0};
 }
