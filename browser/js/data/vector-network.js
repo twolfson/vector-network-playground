@@ -45,7 +45,7 @@ VectorNetwork.getAngle = function (vertexA, vertexB, vertexC) {
   // Perform our calculation
   vectorU.set(vertexA, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
   vectorV.set(vertexC, false /* notify */); vectorU.subtract(vertexB, false /* returnNew */);
-  let angle = -vectorU.angleTo(vectorV);
+  let angle = vectorU.angleTo(vectorV);
   console.log('aaa', angle);
   if (angle < 0) { angle += Math.PI * 2; }
   console.log('bbb', angle);
